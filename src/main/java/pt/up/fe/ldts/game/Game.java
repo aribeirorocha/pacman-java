@@ -22,7 +22,7 @@ public class Game {
                 .createScreen();
 
         screen.startScreen();
-        screen.setCursorPosition(null); // Esconder cursor
+        screen.setCursorPosition(null);
     }
 
     private void draw() throws IOException {
@@ -42,7 +42,6 @@ public class Game {
             KeyStroke key = screen.readInput();
 
             if (key != null) {
-                // ESC para sair
                 if (key.getKeyType() == KeyType.Escape) {
                     screen.close();
                     break;
