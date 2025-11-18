@@ -6,17 +6,17 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 
 ### IMPLEMENTED FEATURES
 
-- **Movimento da personagem** - o user consegue controlar o seu personagem em quatro direções (cima,baixo,esquerda,direita)
+- **Movimento do personagem** - o user controla o seu personagem em quatro direções (cima,baixo,esquerda,direita), está sempre em movimento dependendo da sua direção, só para quando colide com uma parede.
 
-- **Labirinto** - o mapa é composto por paredes que o user não pode passar mas apenas controlar de modo a existir uma navegação estratégica
+- **Labirinto** - o mapa é composto por paredes que o user não pode passar mas apenas controlar de modo a existir uma navegação estratégica.
 
-- **Pontos** - quantos mais pontos o user coleta maior será a sua pontuação no final, se conseguir comer todos os pontos do mapa, o user atinge  a pontuação máxima
+- **Pontos** - quantos mais pontos o user coleta maior será a sua pontuação no final, se conseguir comer todos os pontos do mapa o user atinge a pontuação máxima e ganha o jogo.
 
 - **Fantasmas** - Um ou mais fantasmas percorrem o mapa com o objetivo de apanhar o user, se o fizerem o user perde o jogo
 
 ### PLANNED FEATURES
 
-- **Poderes** - O user não morre ser for apanhado pelos fantasmas enquanto a duração do poder
+- **Poderes** - O user não morre ser for apanhado pelos fantasmas enquanto o poder estiver ativo 
 
 - **Níveis** - À medida que o user completa o mapa com a pontuação máxima terá à sua disposição um novo mapa com uma dificuldade acrescida
 
