@@ -1,3 +1,5 @@
+package pt.up.fe.ldts.game.graphics;
+
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
@@ -28,7 +30,10 @@ public class LanternaGraphicsAdapter implements GraphicInterface {
 
     @Override
     public void fillRectangle(int x, int y, int width, int height, char c) {
-        graphics.fillRectangle(new TerminalPosition(x, y),
-                new TerminalSize(width, height), c);
+        graphics.fillRectangle(
+                new TerminalPosition(x, y),
+                new TerminalSize(width, height),
+                c
+        );
     }
 }
