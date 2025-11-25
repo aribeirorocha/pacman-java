@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## LDTS_<T><G> - <PACMAN>
 
 Neste jogo clássico chamado PACMAN, o user controla uma personagem que percorre um labirinto comendo pontos e evitando os fantasmas. O objetivo é limpar o mapa sem ser apanhado pelos fantasmas.
@@ -21,28 +20,4 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 
 - **Níveis** - À medida que o user completa o mapa com a pontuação máxima terá à sua disposição um novo mapa com uma dificuldade acrescida.
 
-=======
-Sugestões de trivial tests:
 
-@Test
-void testPacmanMovesRight() {
-    Game game = new Game();
-    game.movePacman(Direction.RIGHT);
-    assertEquals(new Position(1,0), game.getPacman().getPosition());
-}
-@Test
-void testPacmanBlockedByWall() {
-    Game game = new Game();
-    game.placeWall(new Position(1,0));
-    game.movePacman(Direction.RIGHT);
-    assertEquals(new Position(0,0), game.getPacman().getPosition()); // não se move
-}
-@Test
-void testPacmanCollectsSinglePoint() {
-    Game game = new Game();
-    game.placePoint(new Position(1,0));
-    game.movePacman(Direction.RIGHT);
-    assertEquals(1, game.getScore());
-    assertFalse(game.hasPoint(new Position(1,0)));
-}
->>>>>>> 852117d48f911e7478540e6ef9747f1370092440
