@@ -284,4 +284,12 @@ public class Arena {
     public int getHeight() {
         return height;
     }
+    public Pacman getPacman() {
+        //para passar os trivial tests
+        return pacman;
+    }
+
+    public List<Wall> getWalls() {
+        return walls;
+    }
 }
