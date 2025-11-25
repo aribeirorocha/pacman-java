@@ -20,4 +20,10 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 
 - **Níveis** - À medida que o user completa o mapa com a pontuação máxima terá à sua disposição um novo mapa com uma dificuldade acrescida.
 
+### Testes
+
+- **Movimento** -
+- **Captura de "coins"** -
+- **Posição** -
+- **Colisão com fantasma** - 
 
