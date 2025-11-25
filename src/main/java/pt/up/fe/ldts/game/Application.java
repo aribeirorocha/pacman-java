@@ -1,5 +1,7 @@
 package pt.up.fe.ldts.game;
 
+import pt.up.fe.ldts.game.controler.Game;
+
 import java.io.IOException;
 
 public class Application {

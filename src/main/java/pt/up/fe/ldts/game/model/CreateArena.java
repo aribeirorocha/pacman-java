@@ -1,4 +1,8 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.model;
+
+import pt.up.fe.ldts.game.model.element.Ghost;
+import pt.up.fe.ldts.game.model.element.Pacman;
+import pt.up.fe.ldts.game.model.element.Wall;
 
 import java.util.List;
 

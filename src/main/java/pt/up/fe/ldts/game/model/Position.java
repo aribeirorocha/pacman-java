@@ -1,4 +1,4 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.model;
 
 public class Position {
     private final int x;

@@ -1,7 +1,14 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.model;
 
+import pt.up.fe.ldts.game.controler.GameControler;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
 import com.googlecode.lanterna.input.KeyStroke;
+import pt.up.fe.ldts.game.model.element.Ghost;
+import pt.up.fe.ldts.game.model.element.Pacman;
+import pt.up.fe.ldts.game.model.element.Point;
+import pt.up.fe.ldts.game.model.element.Wall;
+import pt.up.fe.ldts.game.view.DrawArena;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,5 +1,9 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.view;
 
+import pt.up.fe.ldts.game.model.element.Ghost;
+import pt.up.fe.ldts.game.model.element.Pacman;
+import pt.up.fe.ldts.game.model.element.Point;
+import pt.up.fe.ldts.game.model.element.Wall;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
 import java.util.List;
 

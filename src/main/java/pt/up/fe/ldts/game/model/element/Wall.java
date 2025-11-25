@@ -1,10 +1,6 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.model.element;
 
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
-
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
 
 public class Wall extends Element {
 

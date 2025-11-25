@@ -1,6 +1,10 @@
 package pt.up.fe.ldts.game;
 
 import org.junit.jupiter.api.Test;
+import pt.up.fe.ldts.game.model.Arena;
+import pt.up.fe.ldts.game.model.Position;
+import pt.up.fe.ldts.game.model.element.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PacmanTest {

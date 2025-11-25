@@ -1,5 +1,6 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.controler;
 
+import pt.up.fe.ldts.game.model.Arena;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
 import pt.up.fe.ldts.game.graphics.LanternaGraphicsAdapter;
 import com.googlecode.lanterna.TerminalSize;

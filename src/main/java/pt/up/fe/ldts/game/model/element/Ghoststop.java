@@ -1,6 +1,8 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.model.element;
 
-class Ghoststop extends Ghost {
+import pt.up.fe.ldts.game.model.Position;
+
+public class Ghoststop extends Ghost {
     public Ghoststop(int x, int y) {
         super(x, y);
     }

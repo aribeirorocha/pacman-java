@@ -1,6 +1,8 @@
-package pt.up.fe.ldts.game;
+package pt.up.fe.ldts.game.model.element;
 
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
+import pt.up.fe.ldts.game.model.Position;
+
 public class Pacman extends Element {
     private int score = 0;
 
