@@ -16,6 +16,17 @@ public class DrawArena {
         drawHUD(points, totalPoints, graphics);
         if (gameOver) drawGameOver(width, height, graphics);
     }
+    public String getHUDText(List<Point> points, int totalPoints) {
+        //Testes
+        int pointsCollected = totalPoints - points.size();
+        int percentage = totalPoints > 0 ? (pointsCollected * 100) / totalPoints : 0;
+        return "Points: " + pointsCollected + "/" + totalPoints + " (" + percentage + "%)";
+    }
+    public String getRestartText() {
+        //Test
+        return "Press R to restart or ESC to quit";
+    }
+
 
     private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics) {
         int pointsCollected = totalPoints - points.size();
