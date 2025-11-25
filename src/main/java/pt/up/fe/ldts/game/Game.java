@@ -26,6 +26,7 @@ public class Game {
     }
 
     private void draw() throws IOException {
+        // ... (método draw permanece o mesmo)
         screen.clear();
 
         TextGraphics textGraphics = screen.newTextGraphics();
@@ -37,18 +38,39 @@ public class Game {
     }
 
     public void run() throws IOException {
-        while (true) {
-            draw();
-            KeyStroke key = screen.readInput();
+        try {
+            while (true) {
+                draw();
+                KeyStroke key = screen.readInput();
 
-            if (key != null) {
-                if (key.getKeyType() == KeyType.Escape) {
-                    screen.close();
-                    break;
+                if (key != null) {
+                    // 1. Condição de Saída por 'Escape'
+                    if (key.getKeyType() == KeyType.Escape) {
+                        break; // Sai do loop 'while'
+                    }
+
+                    // 2. Condição de Saída por Fecho da Janela ('X')
+                    if (key.getKeyType() == KeyType.EOF) {
+                        break; // Sai do loop 'while' quando a janela é fechada
+                    }
+
+                    arena.processKey(key);
                 }
-
-                arena.processKey(key);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 3. Bloco 'finally' para garantir o fecho
+            if (screen != null) {
+                try {
+                    screen.close(); // Fecha o terminal da Lanterna
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // 🔑 A LINHA QUE FORÇA O FIM DO PROCESSO JAVA
+            System.exit(0);
         }
     }
 }
