@@ -223,10 +223,12 @@ public class Arena {
     }
 
     private void collectPoint(Position position) {
-        // Remover ponto se o Pacman passou por cima
-        points.removeIf(point -> point.getPosition().equals(position));
+        boolean removed = points.removeIf(point -> point.getPosition().equals(position));
 
-        // Verificar vitória
+        if (removed) {
+            pacman.addScore(1);
+        }
+
         if (points.isEmpty()) {
             System.out.println("YOU WIN! All points collected!");
         }
@@ -290,6 +292,11 @@ public class Arena {
     }
 
     public List<Wall> getWalls() {
+        //para passar os trivial tests
         return walls;
     }
+    public List<Ghost> getGhosts() {
+        return ghosts;
+    }
+
 }

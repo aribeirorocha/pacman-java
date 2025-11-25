@@ -2,6 +2,7 @@ package pt.up.fe.ldts.game;
 
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
 public class Pacman extends Element {
+    private int score = 0;
 
     public Pacman(int x, int y) {
         super(x, y);
@@ -23,10 +24,19 @@ public class Pacman extends Element {
         return new Position(position.getX() + 1, position.getY());
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int value) {
+        this.score += value;
+    }
+
     @Override
     public void draw(GraphicInterface graphics) {
         graphics.setForegroundColor("#FFFF33"); // Amarelo Pacman
         graphics.enableBold();
         graphics.putChar(position.getX(), position.getY(), "C");
     }
+
 }
