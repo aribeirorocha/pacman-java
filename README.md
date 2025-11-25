@@ -22,8 +22,8 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 
 ### Testes
 
-- **Movimento** -
-- **Captura de "coins"** -
-- **Posição** -
-- **Colisão com fantasma** - 
+- **Movimento** - 
+- **Captura de pontos** - Garante que, quando o Pac-Man captura um ponto, a pontuação é aumentada em 1 valor.
+- **Posição** - 
+- **Colisão com fantasma** - Garante que o Pac-Man perde uma vida quando há colisão com o fantasma.
 
