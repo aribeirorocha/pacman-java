@@ -27,3 +27,17 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 - **Posição** - Garante que duas instâncias diferentes da classe Position, criadas com as mesmas coordenadas, são consideradas iguais
 - **Colisão com fantasma** - Garante que o Pac-Man perde a vida quando há colisão com o fantasma.
 
+### Design patterns used
+
+**Contexto Problemático:**
+Num projeto que envolve sistemas interativos complexos, como um jogo, torna-se imperativo estabelecer uma arquitetura estruturada que promova a modularidade, a separação de preocupações (Separation of Concerns) e a manutenção do código. A ausência de uma organização clara poderia conduzir a um acoplamento excessivo entre a lógica do jogo, as interações do utilizador e a representação visual, dificultando o desenvolvimento e as futuras modificações.
+
+**Solução Adotada:**
+Para mitigar estes desafios e organizar o fluxo de dados do sistema, implementou-se o Padrão de Arquitetura Model-View-Controller (MVC). Este padrão de engenharia de software estabelece uma divisão tripartida de responsabilidades, assegurando que cada camada detenha uma função singular e bem definida. Esta abordagem garante que qualquer alteração introduzida numa das camadas (e.g., uma modificação na interface gráfica) não gere um impacto direto nas demais, maximizando a coerência e a extensibilidade do sistema.
+
+**Model (Modelo):** Esta componente encapsula a totalidade do estado do sistema e a lógica inerente ao domínio do problema. No contexto do jogo, o Modelo é responsável por gerir os elementos centrais (e.g., Pacman, fantasmas, colecionáveis) e as regras que governam as suas interações e o game state (estado do jogo).
+
+**View (Vista):** A Vista é dedicada à apresentação dos dados fornecidos pelo Modelo, gerindo exclusivamente a representação visual dos elementos. A sua implementação recorreu à biblioteca Lanterna, que permite a renderização dos elementos do jogo numa interface de consola (terminal).
+
+**Controller (Controlador):** O Controlador atua como o intermediário entre o utilizador e o Modelo. A sua função é interpretar e processar as entradas do utilizador (e.g., comandos de teclado), traduzindo-as em ações que atualizam o estado e a lógica contida no Modelo.
+
