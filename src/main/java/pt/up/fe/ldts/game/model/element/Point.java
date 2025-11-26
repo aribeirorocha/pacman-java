@@ -5,34 +5,23 @@ import pt.up.fe.ldts.game.model.Position;
 
 public class Point extends Element {
 
-    // Novo atributo para distinguir Power Pellets
-    private final boolean isPowerPellet;
-
+    // 1. Construtor Simples para Pontos Normais
+    // Assume-se que a classe pai (Element) tem um construtor que recebe x e y.
     public Point(int x, int y) {
-        this(x, y, false); // Construtor para pontos normais
-    }
-
-    public Point(int x, int y, boolean isPowerPellet) {
+        // CORREÇÃO CRÍTICA: Chama o construtor da Superclasse (Element)
         super(x, y);
-        this.isPowerPellet = isPowerPellet;
+        // Se a Superclasse (Element) não tiver um construtor (x, y), este código falhará.
+        // O construtor do Element deve ser algo como:
+        // public Element(int x, int y) { this.position = new Position(x, y); }
     }
 
-    // Getter necessário para lógica do jogo (pode ser usado no GameControler)
-    public boolean isPowerPellet() {
-        return isPowerPellet;
-    }
-
+    // 2. Método draw, apenas desenhando um ponto normal
     @Override
     public void draw(GraphicInterface graphics) {
         graphics.setForegroundColor("#FFFFFF"); // Cor branca
 
-        if (isPowerPellet) {
-            // Power Pellet (Bola Grande)
-            graphics.enableBold(); // Torna o caractere mais grosso
-            graphics.putChar(getPosition().getX(), getPosition().getY(), "●"); // Caractere de círculo cheio
-            // Alternativa se '●' não funcionar: "O"
-        } else {
-            // Ponto Normal (Bola Pequena)
+        // Verifica se a posição foi inicializada corretamente
+        if (getPosition() != null) {
             graphics.putChar(getPosition().getX(), getPosition().getY(), ".");
         }
     }

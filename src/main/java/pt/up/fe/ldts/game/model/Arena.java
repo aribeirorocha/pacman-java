@@ -23,6 +23,7 @@ public class Arena {
     private List<Point> points;
     private int totalPoints;
     private boolean gameOver;
+    private boolean gameWon;
     // FIM DOS ATRIBUTOS CORRIGIDOS
 
     // Posições onde Power Pellets serão colocadas
@@ -41,6 +42,7 @@ public class Arena {
         this.points = new ArrayList<>();
         this.pacman = new Pacman(2, 2); // A posição real será definida pelo CreateArena
         this.gameOver = false;
+        this.gameWon=false;
 
         // 1. Cria paredes, fantasmas e define Pacman
         new CreateArena().createArena(walls, ghosts, pacman, width, height);
@@ -48,20 +50,25 @@ public class Arena {
         // 2. Cria pontos normais (excluindo as posições PP)
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
-        // 3. ADICIONAR POWER PELLETS MANUALMENTE
-        for (Position ppPos : POWER_PELLET_POSITIONS) {
-            points.add(new Point(ppPos.getX(), ppPos.getY()));
-        }
 
-        this.totalPoints = points.size(); // Total de pontos + 4 Power Pellets
+
+
+
+        this.totalPoints = points.size(); // Total de pontos
     }
 
     public void draw(GraphicInterface graphics) {
-        new DrawArena().draw(points, walls, ghosts, pacman, totalPoints, gameOver, width, height, graphics);
+        new DrawArena().draw(points, walls, ghosts, pacman, totalPoints, gameOver,gameWon, width, height, graphics);
     }
 
     public void processKey(KeyStroke key) {
         new GameControler().processKey(key, pacman, ghosts, walls, points, this);
+        checkGameStatus();
+    }
+    private void checkGameStatus(){
+        if(points.isEmpty()){
+            this.gameWon=true;
+        }
     }
     public int getScore() {
         // Assume que a classe Pacman tem um método getScore()
@@ -77,20 +84,19 @@ public class Arena {
         // Se quiser resetar o score, adicione um método resetScore() em Pacman.
         this.pacman = new Pacman(2, 2);
         this.gameOver = false;
+        this.gameWon=false;
 
         new CreateArena().createArena(walls, ghosts, pacman, width, height);
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
-        // Adicionar Power Pellets novamente
-        for (Position ppPos : POWER_PELLET_POSITIONS) {
-            points.add(new Point(ppPos.getX(), ppPos.getY()));
-        }
 
         totalPoints = points.size();
     }
 
     public boolean isGameOver() { return gameOver; }
     public void setGameOver(boolean value) { this.gameOver = value; }
+    public boolean isGameWon(){return gameWon;}
+
     public int getWidth() { return width; }
     public int getHeight() { return height; }
     public Pacman getPacman() { return pacman; }
@@ -98,4 +104,5 @@ public class Arena {
     public List<Ghost> getGhosts() { return ghosts; }
     public List<Point> getPoints() { return points; }
     public int getTotalPoints() { return totalPoints; }
+
 }
