@@ -25,5 +25,5 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 - **Movimento** - Garante que, quando o Pac-Man se move em qualquer sentido, as suas coordenadas alteram consoante o seu movimento.
 - **Captura de pontos** - Garante que, quando o Pac-Man captura um ponto, a pontuação é aumentada em 1 valor.
 - **Posição** - Garante que duas instâncias diferentes da classe Position, criadas com as mesmas coordenadas, são consideradas iguais
-- **Colisão com fantasma** - Garante que o Pac-Man perde uma vida quando há colisão com o fantasma.
+- **Colisão com fantasma** - Garante que o Pac-Man perde a vida quando há colisão com o fantasma.
 
