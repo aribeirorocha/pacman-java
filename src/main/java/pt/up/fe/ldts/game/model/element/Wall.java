@@ -1,7 +1,6 @@
 package pt.up.fe.ldts.game.model.element;
 
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
-import pt.up.fe.ldts.game.model.Position;
 
 public class Wall extends Element {
 
