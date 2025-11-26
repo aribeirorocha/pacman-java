@@ -8,8 +8,14 @@ import pt.up.fe.ldts.game.model.element.Wall;
 import java.util.List;
 
 public class PointManager {
+    // ... (restante da classe, incluindo o array POWER_PELLET_POSITIONS se o tiver)
+
     public void createPoints(List<Point> points, List<Wall> walls, Pacman pacman, List<Ghost> ghosts, int width, int height) {
-        for (int y = 1; y < height - 1; y++) {
+        // CORREÇÃO: Começamos a partir de y = 2 em vez de y = 1.
+        // A linha y=0 é para o HUD (Score).
+        // A linha y=1 é para o topo da parede.
+        // Os pontos começam a ser criados na linha y=2.
+        for (int y = 2; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
                 Position pos = new Position(x, y);
                 if (canPlacePoint(pos, walls, pacman, ghosts)) {

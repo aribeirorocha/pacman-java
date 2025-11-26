@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Arena {
+
+    // ⭐️ ATRIBUTOS EM FALTA (CORRIGIDO) ⭐️
     private final int width;
     private final int height;
     private Pacman pacman;
@@ -21,6 +23,15 @@ public class Arena {
     private List<Point> points;
     private int totalPoints;
     private boolean gameOver;
+    // FIM DOS ATRIBUTOS CORRIGIDOS
+
+    // Posições onde Power Pellets serão colocadas
+    private static final Position[] POWER_PELLET_POSITIONS = {
+            new Position(1, 3),
+            new Position(38, 3),
+            new Position(1, 15),
+            new Position(38, 15)
+    };
 
     public Arena(int width, int height) {
         this.width = width;
@@ -28,12 +39,21 @@ public class Arena {
         this.walls = new ArrayList<>();
         this.ghosts = new ArrayList<>();
         this.points = new ArrayList<>();
-        this.pacman = new Pacman(2, 2);
+        this.pacman = new Pacman(2, 2); // A posição real será definida pelo CreateArena
         this.gameOver = false;
 
+        // 1. Cria paredes, fantasmas e define Pacman
         new CreateArena().createArena(walls, ghosts, pacman, width, height);
+
+        // 2. Cria pontos normais (excluindo as posições PP)
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
-        this.totalPoints = points.size();
+
+        // 3. ADICIONAR POWER PELLETS MANUALMENTE
+        for (Position ppPos : POWER_PELLET_POSITIONS) {
+            points.add(new Point(ppPos.getX(), ppPos.getY()));
+        }
+
+        this.totalPoints = points.size(); // Total de pontos + 4 Power Pellets
     }
 
     public void draw(GraphicInterface graphics) {
@@ -43,14 +63,29 @@ public class Arena {
     public void processKey(KeyStroke key) {
         new GameControler().processKey(key, pacman, ghosts, walls, points, this);
     }
+    public int getScore() {
+        // Assume que a classe Pacman tem um método getScore()
+        return pacman.getScore();
+    }
 
     public void restart() {
         walls.clear();
         ghosts.clear();
         points.clear();
-        gameOver = false;
+
+        // Reinicializa o pacman para a posição de respawn, o score pode ser mantido ou resetado.
+        // Se quiser resetar o score, adicione um método resetScore() em Pacman.
+        this.pacman = new Pacman(2, 2);
+        this.gameOver = false;
+
         new CreateArena().createArena(walls, ghosts, pacman, width, height);
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
+
+        // Adicionar Power Pellets novamente
+        for (Position ppPos : POWER_PELLET_POSITIONS) {
+            points.add(new Point(ppPos.getX(), ppPos.getY()));
+        }
+
         totalPoints = points.size();
     }
 
@@ -64,4 +99,3 @@ public class Arena {
     public List<Point> getPoints() { return points; }
     public int getTotalPoints() { return totalPoints; }
 }
-

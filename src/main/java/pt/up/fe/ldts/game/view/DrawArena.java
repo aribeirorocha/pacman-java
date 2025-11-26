@@ -14,7 +14,7 @@ public class DrawArena {
         for (Ghost ghost : ghosts) ghost.draw(graphics);
         pacman.draw(graphics);
         drawHUD(points, totalPoints, graphics);
-        if (gameOver) drawGameOver(width, height, graphics);
+        if (gameOver) drawGameOver(width, height, pacman.getScore(), graphics);
     }
     public String getHUDText(List<Point> points, int totalPoints) {
         //Testes
@@ -39,21 +39,38 @@ public class DrawArena {
         }
     }
 
-    private void drawGameOver(int width, int height, GraphicInterface graphics) {
-        String text = "YOU DIED!";
-        int startX = (width - text.length()) / 2;
-        int startY = height / 2;
-        graphics.setForegroundColor("#FF0000");
+    private void drawGameOver(int width, int height, int score, GraphicInterface graphics) {
+        // 1. Preenche toda a área com PRETO
+        graphics.setForegroundColor("#000000"); // Cor preta para o fundo
+        graphics.fillRectangle(0, 0, width, height, ' '); // Preenche com espaços
+
+        // 2. Título "GAME OVER"
+        String title = "YOU DIED!";
+        int titleX = (width - title.length()) / 2;
+        int titleY = height / 2 - 2; // Duas linhas acima do centro
+
+        graphics.setForegroundColor("#FF0000"); // Cor vermelha
         graphics.enableBold();
-        for (int i = 0; i < text.length(); i++) {
-            graphics.putChar(startX + i, startY, String.valueOf(text.charAt(i)));
-        }
+        graphics.putChar(titleX, titleY, title);
+
+        // 3. Pontuação
+        String scoreText = "Score: " + score;
+        int scoreX = (width - scoreText.length()) / 2;
+        int scoreY = height / 2; // No centro
+
+        graphics.setForegroundColor("#FFFFFF"); // Cor branca
+        graphics.putChar(scoreX, scoreY, scoreText);
+
+        // 4. Mensagem de Reinício
         String restart = "Press R to restart or ESC to quit";
         int restartX = (width - restart.length()) / 2;
-        graphics.setForegroundColor("#FFFFFF");
-        for (int i = 0; i < restart.length(); i++) {
-            graphics.putChar(restartX + i, startY + 2, String.valueOf(restart.charAt(i)));
-        }
+        int restartY = height / 2 + 2; // Duas linhas abaixo do centro
+
+        graphics.setForegroundColor("#FFFF00"); // Cor amarela (destaque)
+        graphics.putChar(restartX, restartY, restart);
+
+        // Desliga o bold se foi ligado
+        // graphics.disableBold();
     }
 }
 
