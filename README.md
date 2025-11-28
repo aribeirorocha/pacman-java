@@ -26,6 +26,10 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 - **Captura de pontos** - Garante que, quando o Pac-Man captura um ponto, a pontuação é aumentada em 1 valor.
 - **Posição** - Garante que duas instâncias diferentes da classe Position, criadas com as mesmas coordenadas, são consideradas iguais
 - **Colisão com fantasma** - Garante que o Pac-Man perde a vida quando há colisão com o fantasma.
+- -**Colisão contra parede** - Garante que, quando o pacman se move contra uma parede o seu movimento seja impossibilitado.
+- **Pontos** - Garante que os pontos são contabilizados e mostrados corretamente.
+- **Recomeçar**- Garante que, ao perder o jogo, a mensagem é corretamente mostrada.
+- **GameControler**- Garante que, ao precisonnar a tecla "R" o jogo é reiniciado.
 
 ### Design patterns used
 
