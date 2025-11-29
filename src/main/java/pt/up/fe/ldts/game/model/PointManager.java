@@ -6,21 +6,30 @@ import pt.up.fe.ldts.game.model.element.Point;
 import pt.up.fe.ldts.game.model.element.Wall;
 
 import java.util.List;
+import java.util.Iterator;
 
 public class PointManager {
-    // ... (restante da classe, incluindo o array POWER_PELLET_POSITIONS se o tiver)
+
 
     public void createPoints(List<Point> points, List<Wall> walls, Pacman pacman, List<Ghost> ghosts, int width, int height) {
-        // CORREÇÃO: Começamos a partir de y = 2 em vez de y = 1.
-        // A linha y=0 é para o HUD (Score).
-        // A linha y=1 é para o topo da parede.
-        // Os pontos começam a ser criados na linha y=2.
+
         for (int y = 2; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
                 Position pos = new Position(x, y);
                 if (canPlacePoint(pos, walls, pacman, ghosts)) {
                     points.add(new Point(x, y));
                 }
+            }
+        }
+    }
+    public void checkPointCollision(Pacman pacman, List<Point> points) {
+        Iterator<Point> iterator = points.iterator();
+        while (iterator.hasNext()) {
+            Point point = iterator.next();
+            if (point.getPosition().equals(pacman.getPosition())) {
+                pacman.addScore(10);
+                iterator.remove();
+                break;
             }
         }
     }

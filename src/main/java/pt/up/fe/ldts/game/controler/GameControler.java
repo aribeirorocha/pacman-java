@@ -16,6 +16,27 @@ import java.util.Random;
 
 public class GameControler {
 
+    public void moveElements(Arena arena) {
+        if (arena.isGameOver() || arena.isGameWon()) return;
+
+        movePacmanContinuously(arena.getPacman(), arena.getWalls());
+        moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman());
+
+        checkPointCollision(arena.getPacman(), arena.getPoints());
+        checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
+        arena.publicCheckGameStatus();
+    }
+
+    private void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
+        Position nextPos = pacman.getNextPosition();
+
+        if (!isWall(nextPos, walls)) {
+            pacman.setPosition(nextPos);
+        } else {
+            pacman.setDirection(new Position(0, 0));
+        }
+    }
+
     public void processKey(KeyStroke key, Pacman pacman, List<Ghost> ghosts, List<Wall> walls, List<Point> points, Arena arena) {
         if (arena.isGameOver()) {
             if (key.getKeyType() == KeyType.Character &&
@@ -25,94 +46,33 @@ public class GameControler {
             return;
         }
 
-        Position newPos = null;
-        if (key.getKeyType() == KeyType.ArrowUp) newPos = pacman.moveUp();
-        else if (key.getKeyType() == KeyType.ArrowDown) newPos = pacman.moveDown();
-        else if (key.getKeyType() == KeyType.ArrowLeft) newPos = pacman.moveLeft();
-        else if (key.getKeyType() == KeyType.ArrowRight) newPos = pacman.moveRight();
+        Position newDirection = null;
 
-        if (newPos != null && canMoveTo(newPos, walls)) {
-            pacman.setPosition(newPos);
-            new PointManager().collectPoint(points, pacman, newPos);
+        if (key.getKeyType() == KeyType.ArrowUp) newDirection = pacman.moveUp().minus(pacman.getPosition());
+        else if (key.getKeyType() == KeyType.ArrowDown) newDirection = pacman.moveDown().minus(pacman.getPosition());
+        else if (key.getKeyType() == KeyType.ArrowLeft) newDirection = pacman.moveLeft().minus(pacman.getPosition());
+        else if (key.getKeyType() == KeyType.ArrowRight) newDirection = pacman.moveRight().minus(pacman.getPosition());
+
+        if (newDirection != null) {
+            Position potentialNextPos = pacman.getPosition().plus(newDirection);
+
+            if (!isWall(potentialNextPos, walls)) {
+                pacman.setDirection(newDirection);
+            }
         }
-
-        // Verificar colisão imediatamente após o Pacman se mover (Correção de Teste)
-        checkGhostCollision(pacman, ghosts, arena);
-
-        // Se o jogo terminou na verificação anterior, não avançamos os fantasmas
-        if (arena.isGameOver()) return;
-
-        // Mover fantasmas
-        moveGhosts(ghosts, walls);
-
-        // Verificar colisão novamente (caso o fantasma se mova para o Pacman)
-        checkGhostCollision(pacman, ghosts, arena);
     }
 
-    private boolean canMoveTo(Position position, List<Wall> walls) {
+    private boolean isWall(Position pos, List<Wall> walls) {
         for (Wall wall : walls) {
-            if (wall.getPosition().equals(position)) return false;
-        }
-        return true;
-    }
-
-    // MÉTODO moveGhosts CORRIGIDO PARA QUEBRAR O LOOP
-    private void moveGhosts(List<Ghost> ghosts, List<Wall> walls) {
-        Position[] possibleMoves = {
-                new Position(0, -1), // Cima
-                new Position(0, 1),  // Baixo
-                new Position(-1, 0), // Esquerda
-                new Position(1, 0)   // Direita
-        };
-
-        Random random = new Random();
-
-        for (Ghost ghost : ghosts) {
-            Position currentDirection = ghost.getDirection();
-            Position newPosition = ghost.getNextPosition(currentDirection);
-
-            // 1. Tenta mover na direção atual (movimento fluido)
-            if (canMoveTo(newPosition, walls)) {
-                ghost.setPosition(newPosition);
-                continue;
-            }
-
-            // 2. Se a direção atual estiver bloqueada, recolher direções disponíveis
-            List<Position> availableDirections = new ArrayList<>();
-            List<Position> nonOppositeAvailableDirections = new ArrayList<>();
-
-            for (Position attemptedDirection : possibleMoves) {
-                Position checkPos = ghost.getNextPosition(attemptedDirection);
-
-                if (canMoveTo(checkPos, walls)) {
-                    availableDirections.add(attemptedDirection);
-                    if (!isOpposite(currentDirection, attemptedDirection)) {
-                        nonOppositeAvailableDirections.add(attemptedDirection);
-                    }
-                }
-            }
-
-            // 3. Escolhe a melhor direção da lista de disponíveis
-            Position validNewDirection = null;
-
-            if (nonOppositeAvailableDirections.size() > 0) {
-                // Prioridade A: Escolha aleatória entre as direções que não são a oposta
-                validNewDirection = nonOppositeAvailableDirections.get(random.nextInt(nonOppositeAvailableDirections.size()));
-            } else if (availableDirections.size() > 0) {
-                // Prioridade B: Escolha aleatória entre as direções disponíveis (só deve acontecer em becos sem saída)
-                validNewDirection = availableDirections.get(random.nextInt(availableDirections.size()));
-            }
-
-            // 4. Aplica a nova direção
-            if (validNewDirection != null) {
-                ghost.setDirection(validNewDirection);
-                ghost.setPosition(ghost.getNextPosition(validNewDirection));
+            if (wall.getPosition().equals(pos)) {
+                return true;
             }
         }
+        return false;
     }
 
-    private boolean isOpposite(Position dir1, Position dir2) {
-        return dir1.getX() == -dir2.getX() && dir1.getY() == -dir2.getY();
+    private void checkPointCollision(Pacman pacman, List<Point> points) {
+        new PointManager().checkPointCollision(pacman, points);
     }
 
     private void checkGhostCollision(Pacman pacman, List<Ghost> ghosts, Arena arena) {
@@ -122,5 +82,50 @@ public class GameControler {
                 return;
             }
         }
+    }
+
+    public void moveGhosts(List<Ghost> ghosts, List<Wall> walls, Pacman pacman) {
+        Random random = new Random();
+        for (Ghost ghost : ghosts) {
+            Position previousDirection = ghost.getDirection();
+
+            List<Position> availableDirections = new ArrayList<>();
+            List<Position> nonOppositeAvailableDirections = new ArrayList<>();
+
+            Position[] allDirections = {
+                    new Position(0, -1),
+                    new Position(0, 1),
+                    new Position(-1, 0),
+                    new Position(1, 0)
+            };
+
+            for (Position attemptedDirection : allDirections) {
+                Position nextPosition = ghost.getPosition().plus(attemptedDirection);
+
+                if (!isWall(nextPosition, walls)) {
+                    availableDirections.add(attemptedDirection);
+                    if (!isOpposite(previousDirection, attemptedDirection)) {
+                        nonOppositeAvailableDirections.add(attemptedDirection);
+                    }
+                }
+            }
+
+            Position validNewDirection = null;
+
+            if (nonOppositeAvailableDirections.size() > 0) {
+                validNewDirection = nonOppositeAvailableDirections.get(random.nextInt(nonOppositeAvailableDirections.size()));
+            } else if (availableDirections.size() > 0) {
+                validNewDirection = availableDirections.get(random.nextInt(availableDirections.size()));
+            }
+
+            if (validNewDirection != null) {
+                ghost.setDirection(validNewDirection);
+                ghost.setPosition(ghost.getNextPosition(validNewDirection));
+            }
+        }
+    }
+
+    private boolean isOpposite(Position dir1, Position dir2) {
+        return dir1.getX() == -dir2.getX() && dir1.getY() == -dir2.getY();
     }
 }
