@@ -14,6 +14,8 @@ import java.io.IOException;
 public class Game {
     private Screen screen;
     private Arena arena;
+    private static final int FRAME_TIME =150;
+    private GameControler gameControler;
 
     public Game() throws IOException {
         arena = new Arena(40, 20);
@@ -24,10 +26,11 @@ public class Game {
 
         screen.startScreen();
         screen.setCursorPosition(null);
+        this.gameControler=new GameControler();
     }
 
     private void draw() throws IOException {
-        // ... (método draw permanece o mesmo)
+
         screen.clear();
 
         TextGraphics textGraphics = screen.newTextGraphics();
@@ -41,37 +44,44 @@ public class Game {
     public void run() throws IOException {
         try {
             while (true) {
+                long startTime = System.currentTimeMillis();
                 draw();
-                KeyStroke key = screen.readInput();
+                KeyStroke key = screen.pollInput();
 
                 if (key != null) {
-                    // 1. Condição de Saída por 'Escape'
-                    if (key.getKeyType() == KeyType.Escape) {
-                        break; // Sai do loop 'while'
+
+                    if (key.getKeyType() == KeyType.Escape||key.getKeyType()==  KeyType.EOF) {
+                        break;
                     }
 
-                    // 2. Condição de Saída por Fecho da Janela ('X')
-                    if (key.getKeyType() == KeyType.EOF) {
-                        break; // Sai do loop 'while' quando a janela é fechada
-                    }
 
                     arena.processKey(key);
+                }
+                gameControler.moveElements(arena);
+                long elapsedTime = System.currentTimeMillis()-startTime;
+                long sleepTime=FRAME_TIME-elapsedTime;
+                if (sleepTime>0){
+                    try{
+                        Thread.sleep(sleepTime);
+                    } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // 3. Bloco 'finally' para garantir o fecho
+
             if (screen != null) {
                 try {
-                    screen.close(); // Fecha o terminal da Lanterna
+                    screen.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
-            // 🔑 A LINHA QUE FORÇA O FIM DO PROCESSO JAVA
-            System.exit(0);
+
+
         }
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Arena {
 
-    // ⭐️ ATRIBUTOS EM FALTA (CORRIGIDO) ⭐️
+
     private final int width;
     private final int height;
     private Pacman pacman;
@@ -24,9 +24,9 @@ public class Arena {
     private int totalPoints;
     private boolean gameOver;
     private boolean gameWon;
-    // FIM DOS ATRIBUTOS CORRIGIDOS
 
-    // Posições onde Power Pellets serão colocadas
+
+
     private static final Position[] POWER_PELLET_POSITIONS = {
             new Position(1, 3),
             new Position(38, 3),
@@ -40,14 +40,14 @@ public class Arena {
         this.walls = new ArrayList<>();
         this.ghosts = new ArrayList<>();
         this.points = new ArrayList<>();
-        this.pacman = new Pacman(2, 2); // A posição real será definida pelo CreateArena
+        this.pacman = new Pacman(2, 2);
         this.gameOver = false;
         this.gameWon=false;
 
-        // 1. Cria paredes, fantasmas e define Pacman
+
         new CreateArena().createArena(walls, ghosts, pacman, width, height);
 
-        // 2. Cria pontos normais (excluindo as posições PP)
+
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
 
@@ -63,7 +63,7 @@ public class Arena {
 
     public void processKey(KeyStroke key) {
         new GameControler().processKey(key, pacman, ghosts, walls, points, this);
-        checkGameStatus();
+
     }
     private void checkGameStatus(){
         if(points.isEmpty()){
@@ -71,8 +71,11 @@ public class Arena {
         }
     }
     public int getScore() {
-        // Assume que a classe Pacman tem um método getScore()
+
         return pacman.getScore();
+    }
+    public void publicCheckGameStatus() {
+        checkGameStatus();
     }
 
     public void restart() {
@@ -80,8 +83,7 @@ public class Arena {
         ghosts.clear();
         points.clear();
 
-        // Reinicializa o pacman para a posição de respawn, o score pode ser mantido ou resetado.
-        // Se quiser resetar o score, adicione um método resetScore() em Pacman.
+
         this.pacman = new Pacman(2, 2);
         this.gameOver = false;
         this.gameWon=false;

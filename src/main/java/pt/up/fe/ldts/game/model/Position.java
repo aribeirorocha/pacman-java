@@ -17,6 +17,15 @@ public class Position {
         return y;
     }
 
+    public Position plus (Position delta){
+        return new Position (this.x + delta.x, this.y + delta.y);
+    }
+    public Position minus (Position other){
+        return new Position(this.x - other.x , this.y- other.y);
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
