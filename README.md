@@ -22,11 +22,19 @@ Este projeto foi desenvolvido por André Rocha (up202407636@up.pt) Catarina Mend
 
 ### Testes
 
-- **Movimento** - Garante que, quando o Pac-Man se move em qualquer sentido, as suas coordenadas alteram consoante o seu movimento.
-- **Captura de pontos** - Garante que, quando o Pac-Man captura um ponto, a pontuação é aumentada em 1 valor.
-- **Posição** - Garante que duas instâncias diferentes da classe Position, criadas com as mesmas coordenadas, são consideradas iguais
-- **Colisão com fantasma** - Garante que o Pac-Man perde a vida quando há colisão com o fantasma.
+-**Movimento**- "PacmanMovementTest.java", "GameControlerTest.java" - Garante que, quando o Pac-Man se move em qualquer sentido (Cima, Baixo, Esquerda, Direita), as suas coordenadas alteram consoante o seu movimento.
 
+-**Captura de Pontos**- ,"ArenaPointTest.java", "PointManagerCollisionTest.java" - Garante que, quando o "Pac-Man" se move para a posição de um ponto, a pontuação é aumentada (em 1 ou 10, dependendo do teste) e o ponto é removido da Arena.
+
+-**Colisão com Fantasma** - "ArenaGhostTest.java", "GameControlerTest.java" - Garante que o Pac-Man perde a vida (o jogo entra em estado GameOver) quando há colisão, ou seja, quando o Pac-Man e o fantasma ocupam a mesma Position.
+
+-**Igualdade de Posição** - "PositionTest.java" - Garante que duas instâncias diferentes da classe "Position", criadas com as mesmas coordenadas (X e Y), são consideradas iguais (p1.equals(p2)).
+
+-**Colisão com Parede** - "ArenaWallTest.java" - Garante que o Pac-Man é bloqueado por uma Wall, impedindo a alteração de sua posição.
+
+-**Reinício do Jogo** - "GameControlerRestartTest.java" - Garante que, ao pressionar a tecla 'R' no estado de GameOver, a Arena reinicia, definindo "isGameOver" como "false".
+
+-**Interface (HUD)** - "DrawArenaTest.java", "RestartTextTest.java" - Garante a correta exibição da pontuação no HUD e da mensagem de reinício no ecrã de Game Over.
 ### Design patterns used
 
 **Contexto Problemático:**
