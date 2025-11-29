@@ -5,10 +5,15 @@ import pt.up.fe.ldts.game.model.Position;
 
 public class Pacman extends Element {
     private int score = 0;
+    private Position direction;
+
 
     public Pacman(int x, int y) {
         super(x, y);
+        this.direction = new Position(0,0);
     }
+    public Position getDirection(){return direction;}
+
 
     public Position moveUp() {
         return new Position(position.getX(), position.getY() - 1);
@@ -24,6 +29,13 @@ public class Pacman extends Element {
 
     public Position moveRight() {
         return new Position(position.getX() + 1, position.getY());
+    }
+
+    public void setDirection (Position direction){
+        this.direction=direction;
+    }
+    public  Position getNextPosition(){
+        return position.plus(direction);
     }
 
     public int getScore() {
