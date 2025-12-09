@@ -34,7 +34,7 @@ public class Game {
         screen.clear();
 
         TextGraphics textGraphics = screen.newTextGraphics();
-        GraphicInterface graphics = new LanternaGraphicsAdapter(textGraphics);
+        GraphicInterface graphics = new LanternaGraphicsAdapter(textGraphics, screen);
 
         arena.draw(graphics);
 
