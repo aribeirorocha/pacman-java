@@ -5,6 +5,8 @@ import pt.up.fe.ldts.game.model.element.Pacman;
 import pt.up.fe.ldts.game.model.element.Point;
 import pt.up.fe.ldts.game.model.element.Wall;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -37,11 +39,20 @@ public class DrawArena {
 
     // --- Métodos Públicos ---
 
-    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman, int totalPoints, boolean gameOver, boolean gameWon, int width, int height, GraphicInterface graphics) {
+    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman, int totalPoints, boolean gameOver, boolean gameWon, int width, int height, GraphicInterface graphics) throws InterruptedException {
+        try {
+            graphics.clear();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (!gameOver && !gameWon) {
-            for (Point point : points) point.draw(graphics);
-            for (Wall wall : walls) wall.draw(graphics);
-            for (Ghost ghost : ghosts) ghost.draw(graphics);
+            for (Point point : points){ point.draw(graphics);
+                graphics.setForegroundColor("#FFFFFF");}
+            for (Wall wall : walls) {wall.draw(graphics);
+                graphics.setForegroundColor("#0000FF");}
+            for (Ghost ghost : ghosts) {ghost.draw(graphics);
+                graphics.setForegroundColor(ghost.getColor());}
+            graphics.setForegroundColor("#FFFF33");
             pacman.draw(graphics);
             drawHUD(points, totalPoints, graphics);
         }
@@ -66,7 +77,7 @@ public class DrawArena {
 
     // --- Métodos Privados de Desenho ---
 
-    private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics) {
+    private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics) throws InterruptedException {
         String hudText = getHUDText(points, totalPoints);
         graphics.setForegroundColor("#FFFFFF");
         graphics.enableBold();
@@ -77,7 +88,7 @@ public class DrawArena {
         // graphics.disableBold();
     }
 
-    private void drawGameOver(int width, int height, int score, GraphicInterface graphics) {
+    private void drawGameOver(int width, int height, int score, GraphicInterface graphics) throws InterruptedException {
         // 1. Fundo
         graphics.setForegroundColor("#000000");
         graphics.fillRectangle(0, 0, width, height, ' ');
@@ -111,7 +122,7 @@ public class DrawArena {
         drawString(graphics, restartX, restartY, restart);
     }
 
-    private void drawGameWin(int width, int height, int score, GraphicInterface graphics) {
+    private void drawGameWin(int width, int height, int score, GraphicInterface graphics) throws InterruptedException {
         // 1. Fundo
         graphics.setForegroundColor("#00008B");
         graphics.fillRectangle(0, 0, width, height, ' ');

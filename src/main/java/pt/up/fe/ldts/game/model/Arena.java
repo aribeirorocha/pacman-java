@@ -25,15 +25,6 @@ public class Arena {
     private boolean gameOver;
     private boolean gameWon;
 
-
-
-    private static final Position[] POWER_PELLET_POSITIONS = {
-            new Position(1, 3),
-            new Position(38, 3),
-            new Position(1, 15),
-            new Position(38, 15)
-    };
-
     public Arena(int width, int height) {
         this.width = width;
         this.height = height;
@@ -50,14 +41,10 @@ public class Arena {
 
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
-
-
-
-
         this.totalPoints = points.size(); // Total de pontos
     }
 
-    public void draw(GraphicInterface graphics) {
+    public void draw(GraphicInterface graphics) throws InterruptedException {
         new DrawArena().draw(points, walls, ghosts, pacman, totalPoints, gameOver,gameWon, width, height, graphics);
     }
 
@@ -65,15 +52,17 @@ public class Arena {
         new GameControler().processKey(key, pacman, ghosts, walls, points, this);
 
     }
+
+    public void update() {
+        new GameControler().moveElements(this);
+    } //Para os níveis e tal
+
     private void checkGameStatus(){
         if(points.isEmpty()){
             this.gameWon=true;
         }
     }
-    public int getScore() {
 
-        return pacman.getScore();
-    }
     public void publicCheckGameStatus() {
         checkGameStatus();
     }
@@ -106,5 +95,4 @@ public class Arena {
     public List<Ghost> getGhosts() { return ghosts; }
     public List<Point> getPoints() { return points; }
     public int getTotalPoints() { return totalPoints; }
-
 }

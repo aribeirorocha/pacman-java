@@ -1,26 +1,32 @@
 package pt.up.fe.ldts.game.graphics;
 
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 import java.io.IOException;
 
 public class LanternaGraphicsAdapter implements GraphicInterface {
-    private final TextGraphics tg;
     private final Screen screen;
+    private final TextGraphics tg;
 
-    public LanternaGraphicsAdapter(TextGraphics tg, Screen screen) {
-        this.tg = tg;
+    public LanternaGraphicsAdapter(Screen screen) {
         this.screen = screen;
+        this.tg = screen.newTextGraphics();
     }
 
     @Override
     public void setForegroundColor(String color) {
+        try {
+            tg.setForegroundColor(TextColor.Factory.fromString(color));
+        } catch (IllegalArgumentException e) {
+            //Caso a string não seja válida. Por segurança
+            tg.setForegroundColor(TextColor.ANSI.WHITE);
+        }
     }
 
     @Override
-    public void enableBold() {
-
+    public void enableBold()  {
     }
 
     @Override
