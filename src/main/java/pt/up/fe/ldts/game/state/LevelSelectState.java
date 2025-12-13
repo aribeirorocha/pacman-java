@@ -26,10 +26,14 @@ public class LevelSelectState implements State {
         } else if (key.getKeyType() == KeyType.ArrowDown) {
             option = (option + 1) % 4; // move down (wrap around)
         } else if (key.getKeyType() == KeyType.Enter) {
-            if (option == 3) {
+            if (option == 0) {
+                return new GameState(1); // Level 1
+            } else if (option == 1) {
+                return new GameState(2); // Level 2
+            } else if (option == 2) {
+                return new GameState(3); // Level 3
+            } else if (option == 3) {
                 return new MainMenuState(); // back to main menu
-            } else {
-                return new GameState(1); // start level 1 for all levels
             }
         }
         return this; // stay in level select

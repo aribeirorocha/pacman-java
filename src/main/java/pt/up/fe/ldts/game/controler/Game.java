@@ -17,7 +17,7 @@ public class Game {
     private GameControler gameControler;
 
     public Game() throws IOException {
-        arena = new Arena(40, 20);
+        arena = new Arena(60, 30);
 
         screen = new DefaultTerminalFactory()
                 .setInitialTerminalSize(new TerminalSize(40, 20))
