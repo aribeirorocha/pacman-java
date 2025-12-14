@@ -47,7 +47,7 @@ public class Pacman extends Element {
     }
 
     @Override
-    public void draw(GraphicInterface graphics) {
+    public void draw(GraphicInterface graphics) throws InterruptedException {
         graphics.setForegroundColor("#FFFF33"); // Amarelo Pacman
         graphics.enableBold();
         graphics.putChar(position.getX(), position.getY(), "C");

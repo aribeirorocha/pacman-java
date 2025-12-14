@@ -9,6 +9,7 @@ public class Ghost extends Element {
     private final String color;
     private Position direction;
     private final Random random;
+    private int speed = 1; //para a velocidade
 
     // ⭐️ CONSTRUTOR DE 2 ARGUMENTOS (CORRIGIDO PARA COMPATIBILIDADE) ⭐️
     // Chama o construtor de 3 argumentos, usando uma cor padrão (ex: Vermelho)
@@ -22,6 +23,7 @@ public class Ghost extends Element {
         this.color = color;
         this.random = new Random();
         this.direction = getInitialRandomDirection();
+        this.speed = 1;
     }
     private Position getInitialRandomDirection() {
         Position[] initialMoves = {
@@ -62,4 +64,17 @@ public class Ghost extends Element {
         // Símbolo do Fantasma
         graphics.putChar(getPosition().getX(), getPosition().getY(), "⌽");
     }
+    public String getColor() {
+        return color;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+    public void setSpeed(int speed) {
+        this.speed = Math.max(1, speed);
+    }
+
+
+
 }

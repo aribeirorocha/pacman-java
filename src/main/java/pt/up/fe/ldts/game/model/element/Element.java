@@ -19,5 +19,5 @@ public abstract class Element {
     }
 
     // Método abstrato - cada elemento desenha-se de forma diferente
-    public abstract void draw(GraphicInterface graphics);
+    public abstract void draw(GraphicInterface graphics) throws InterruptedException;
 }
