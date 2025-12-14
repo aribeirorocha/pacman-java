@@ -1,17 +1,22 @@
 package pt.up.fe.ldts.game.state.Levels;
 
 import pt.up.fe.ldts.game.model.Arena;
-import pt.up.fe.ldts.game.model.CreateArenaLevel3;
+import pt.up.fe.ldts.game.model.CreateArena;
+
+import java.io.IOException;
 
 public class Level3Builder implements LevelBuilder {
+
     @Override
     public void createArena(Arena arena) {
-        // Usa um layout maior
-        new CreateArenaLevel3().createArena(
+        CreateArena creator = new CreateArena();
+        creator.createArena(
                 arena.getWalls(),
                 arena.getGhosts(),
                 arena.getPacman(),
-                60, 30
+                arena.getWidth(),
+                arena.getHeight(),
+                3
         );
     }
 }

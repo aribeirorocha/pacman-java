@@ -8,6 +8,6 @@ public class Level1Builder implements LevelBuilder {
     public void createArena(Arena arena) {
         // Layout normal
         new CreateArena().createArena(arena.getWalls(), arena.getGhosts(), arena.getPacman(),
-                arena.getWidth(), arena.getHeight());
+                arena.getWidth(), arena.getHeight(), arena.getLevel());
     }
 }

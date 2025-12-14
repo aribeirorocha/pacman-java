@@ -6,28 +6,38 @@ import com.googlecode.lanterna.input.KeyType;
 import java.io.IOException;
 
 public class MainMenuState implements State {
-    private int option = 0; // 0 = Play, 1 = Exit
+    private int option = 0;
+    private final String[] options = { "Play", "Instructions", "Exit" };
 
     @Override
     public void draw(GraphicInterface graphics) throws IOException {
         graphics.clear();
-        graphics.drawText(10, 5, "===== PACMAN =====");
-        graphics.drawText(10, 8, option == 0 ? "> Play" : "  Play");
-        graphics.drawText(10, 9, option == 1 ? "> Exit" : "  Exit");
+        graphics.drawText(10, 3, "########################################");
+        graphics.drawText(10, 4, "#             PACMAN                   #");
+        graphics.drawText(10, 5, "########################################");
+
+        for (int i = 0; i < options.length; i++) {
+            String prefix = (i == option) ? "> " : "  ";
+            graphics.drawText(12, 8 + i, prefix + options[i]);
+        }
+
         graphics.refresh();
     }
 
     @Override
     public State processKey(KeyStroke key) throws IOException {
-        if (key.getKeyType() == KeyType.ArrowUp || key.getKeyType() == KeyType.ArrowDown) {
-            option = 1 - option; // toggle between 0 and 1
+        if (key.getKeyType() == KeyType.ArrowUp) {
+            option = (option - 1 + options.length) % options.length;
+        } else if (key.getKeyType() == KeyType.ArrowDown) {
+            option = (option + 1) % options.length;
         } else if (key.getKeyType() == KeyType.Enter) {
-            if (option == 0) {
-                return new LevelSelectState(); // go to levels menu
-            } else {
-                System.exit(0); // exit the game
+            switch (option) {
+                case 0: return new LevelSelectState(); // seleção de nível
+                case 1: return new InstructionsState(); // mostra instruções
+                case 2: System.exit(0); // Exit
             }
         }
-        return this; // stay in menu
+        return this;
     }
 }
+

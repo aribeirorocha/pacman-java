@@ -5,6 +5,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.input.KeyStroke;
 import pt.up.fe.ldts.game.graphics.LanternaGraphicsAdapter;
+import pt.up.fe.ldts.game.state.MainMenuState;
 import pt.up.fe.ldts.game.state.State;
 import pt.up.fe.ldts.game.state.LevelSelectState;
 
@@ -18,7 +19,7 @@ public class Application {
         screen.startScreen();
         screen.setCursorPosition(null);
         LanternaGraphicsAdapter graphics = new LanternaGraphicsAdapter(screen);
-        State state = new LevelSelectState();
+        State state = new MainMenuState();
         while (true) {
             state.draw(graphics);
             screen.refresh();

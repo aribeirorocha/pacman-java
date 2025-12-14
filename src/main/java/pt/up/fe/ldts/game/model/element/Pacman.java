@@ -6,6 +6,8 @@ import pt.up.fe.ldts.game.model.Position;
 public class Pacman extends Element {
     private int score = 0;
     private Position direction;
+    private boolean immune; //para os poderes
+    private long immuneUntil;
 
 
     public Pacman(int x, int y) {
@@ -52,5 +54,22 @@ public class Pacman extends Element {
         graphics.enableBold();
         graphics.putChar(position.getX(), position.getY(), "C");
     }
+    public boolean isImmune() {
+        return immune && System.currentTimeMillis() < immuneUntil; //Ainda está sob efeito dos poderes
+    }
+    public void setImmune(long durationMillis) {
+        this.immune = true;
+        this.immuneUntil = System.currentTimeMillis() + durationMillis;
+    } //Ativa os poderes
+    public void activatePower() {
+        setImmune(5000);
+    }
+
+    public long getImmuneTimeLeft() {
+        if (!immune) return 0;
+        long remaining = immuneUntil - System.currentTimeMillis();
+        return remaining > 0 ? remaining / 1000 : 0; // tempo dos poderes
+    }
+
 
 }

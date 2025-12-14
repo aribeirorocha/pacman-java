@@ -5,16 +5,15 @@ import com.googlecode.lanterna.input.KeyType;
 import pt.up.fe.ldts.game.model.Arena;
 import pt.up.fe.ldts.game.model.PointManager;
 import pt.up.fe.ldts.game.model.Position;
-import pt.up.fe.ldts.game.model.element.Ghost;
-import pt.up.fe.ldts.game.model.element.Pacman;
-import pt.up.fe.ldts.game.model.element.Point;
-import pt.up.fe.ldts.game.model.element.Wall;
+import pt.up.fe.ldts.game.model.element.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class GameControler {
+
+    private long lastSpawnTime = System.currentTimeMillis();
     private boolean isOpposite(Position dir1, Position dir2) {
         if (dir1 == null || dir2 == null) return false;
         return dir1.getX() == -dir2.getX() && dir1.getY() == -dir2.getY();
@@ -27,6 +26,8 @@ public class GameControler {
         moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman());
 
         checkPointCollision(arena.getPacman(), arena.getPoints());
+        spawnPowerPellet(arena);
+        checkPowerPelletCollision(arena.getPacman(), arena);
         checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
         arena.publicCheckGameStatus();
     }
@@ -34,11 +35,19 @@ public class GameControler {
     private void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
         Position nextPos = pacman.getNextPosition();
 
-        if (!isWall(nextPos, walls)) {
+        if (!isBlocked(nextPos, walls)) {
             pacman.setPosition(nextPos);
         } else {
             pacman.setDirection(new Position(0, 0));
         }
+    }
+    private boolean isBlocked(Position pos, List<Wall> walls) {
+        for (Wall wall : walls) {
+            if (wall.getPosition().equals(pos)) {
+                return true; // apenas paredes bloqueiam
+            }
+        }
+        return false;
     }
 
     public void processKey(KeyStroke key, Pacman pacman, List<Ghost> ghosts, List<Wall> walls, List<Point> points, Arena arena) {
@@ -79,12 +88,35 @@ public class GameControler {
         new PointManager().checkPointCollision(pacman, points);
     }
 
+    private void checkPowerPelletCollision(Pacman pacman, Arena arena) {
+        for (PowerPellet pellet : new ArrayList<>(arena.getPowerPellets())) {
+            if (pacman.getPosition().equals(pellet.getPosition())) {
+                pacman.setImmune(5000); // 5s de poder
+                arena.removePowerPellet(pellet);
+                break;
+            }
+        }
+    }
+
     private void checkGhostCollision(Pacman pacman, List<Ghost> ghosts, Arena arena) {
         for (Ghost ghost : ghosts) {
             if (ghost.getPosition().equals(pacman.getPosition())) {
-                arena.setGameOver(true);
-                return;
+                if (pacman.isImmune()) {
+                    // Fantasma morre e volta à cage
+                    ghost.setPosition(arena.getGhostCagePosition());
+                } else {
+                    arena.setGameOver(true);
+                    return;
+                }
             }
+        }
+    }
+
+    private void spawnPowerPellet(Arena arena) {
+        if (System.currentTimeMillis() - lastSpawnTime > 10000) { // poder aparece a cada 10s
+            Position pos = arena.getRandomFreePosition();
+            arena.addPowerPellet(new PowerPellet(pos.getX(), pos.getY()));
+            lastSpawnTime = System.currentTimeMillis();
         }
     }
 

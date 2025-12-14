@@ -62,4 +62,6 @@ public class LanternaGraphicsAdapter implements GraphicInterface {
     public KeyStroke readKey() throws IOException {
         return screen.readInput();
     }
+
+
 }

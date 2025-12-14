@@ -9,7 +9,7 @@ public class Level2Builder implements LevelBuilder {
     public void createArena(Arena arena) {
         // Mesmo layout
         new CreateArena().createArena(arena.getWalls(), arena.getGhosts(), arena.getPacman(),
-                arena.getWidth(), arena.getHeight());
+                arena.getWidth(), arena.getHeight(),  arena.getLevel());
         // Fantasmas mais rápidos
         for (Ghost ghost : arena.getGhosts()) {
             ghost.setSpeed(2); // velocidade duplicada
