@@ -13,18 +13,20 @@ import java.io.IOException;
 
 public class GameState implements State {
     private Arena arena;
-    private final int level;
+    private final int initialLevel;
 
     public GameState(int level) throws IOException {
-        this.level = level;
-        initArena();
+        this.initialLevel = level;
+        initArena(level);
     }
 
-    private void initArena() throws IOException {
+    private void initArena(int level) throws IOException {
         // Criar arena baseada no nível
         arena = switch (level) {
-            case 3 -> new Arena(60, 30);
-            default -> new Arena(40, 20);
+            case 3 -> new Arena(60, 30, 3);
+            case 2 -> new Arena(40, 20, 2);
+            case 1 -> new Arena(40, 20, 1);
+            default -> new Arena(40, 20, 1);
         };
 
         LevelBuilder builder = switch (level) {
@@ -39,33 +41,31 @@ public class GameState implements State {
 
     @Override
     public void draw(GraphicInterface graphics) throws InterruptedException {
-        arena.update();          // mover
+        arena.update(); // mover elementos
         try {
-            arena.draw(graphics);    // desenhar arena
+            arena.draw(graphics); // desenhar arena
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public State processKey(KeyStroke key) throws IOException {
         if (key.getKeyType() == KeyType.Escape) {
-            // Voltar ao menu de níveis
             return new LevelSelectState();
         }
 
         arena.processKey(key);
 
-        // Verificar game over
         if (arena.isGameOver()) {
-            // Podes criar um GameOverState aqui
-            // Por agora, volta ao menu
             if (key.getKeyType() == KeyType.Character &&
                     (key.getCharacter() == 'r' || key.getCharacter() == 'R')) {
-                // Restart mesmo nível
-                initArena();
+
+                initArena(initialLevel);
             }
         }
 
         return this;
     }
+
 }

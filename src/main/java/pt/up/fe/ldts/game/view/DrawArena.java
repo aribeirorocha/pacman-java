@@ -1,9 +1,6 @@
 package pt.up.fe.ldts.game.view;
 
-import pt.up.fe.ldts.game.model.element.Ghost;
-import pt.up.fe.ldts.game.model.element.Pacman;
-import pt.up.fe.ldts.game.model.element.Point;
-import pt.up.fe.ldts.game.model.element.Wall;
+import pt.up.fe.ldts.game.model.element.*;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
 
 import java.io.IOException;
@@ -39,7 +36,7 @@ public class DrawArena {
 
     // --- Métodos Públicos ---
 
-    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman, int totalPoints, boolean gameOver, boolean gameWon, int width, int height, GraphicInterface graphics) throws InterruptedException {
+    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman, int totalPoints, boolean gameOver, boolean gameWon, int width, int height, GraphicInterface graphics, List<PowerPellet> powerPellets) throws InterruptedException {
         try {
             graphics.clear();
         } catch (IOException e) {
@@ -52,9 +49,12 @@ public class DrawArena {
                 graphics.setForegroundColor("#0000FF");}
             for (Ghost ghost : ghosts) {ghost.draw(graphics);
                 graphics.setForegroundColor(ghost.getColor());}
+            for (PowerPellet pellet : powerPellets) {
+                graphics.setForegroundColor("#FFD700");
+                graphics.putChar(pellet.getPosition().getX(), pellet.getPosition().getY(), "O");}
             graphics.setForegroundColor("#FFFF33");
             pacman.draw(graphics);
-            drawHUD(points, totalPoints, graphics);
+            drawHUD(points, totalPoints, graphics, pacman);
         }
 
         if (gameOver) {
@@ -77,8 +77,12 @@ public class DrawArena {
 
     // --- Métodos Privados de Desenho ---
 
-    private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics) throws InterruptedException {
+    private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics, Pacman pacman) throws InterruptedException {
         String hudText = getHUDText(points, totalPoints);
+        if (pacman.isImmune()) {
+            long immuneLeft = pacman.getImmuneTimeLeft();
+            hudText += " | IMMUNE: " + immuneLeft + "s";
+        }
         graphics.setForegroundColor("#FFFFFF");
         graphics.enableBold();
 
