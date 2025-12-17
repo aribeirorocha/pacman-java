@@ -6,6 +6,7 @@ import pt.up.fe.ldts.game.model.Position;
 public class Pacman extends Element {
     private int score = 0;
     private Position direction;
+    private Position bufferedDirection; // guardar a direção
     private boolean immune; //para os poderes
     private long immuneUntil;
 
@@ -36,6 +37,8 @@ public class Pacman extends Element {
     public void setDirection (Position direction){
         this.direction=direction;
     }
+    public Position getBufferedDirection() { return bufferedDirection; }
+    public void setBufferedDirection(Position dir) { this.bufferedDirection = dir; }
     public  Position getNextPosition(){
         return position.plus(direction);
     }

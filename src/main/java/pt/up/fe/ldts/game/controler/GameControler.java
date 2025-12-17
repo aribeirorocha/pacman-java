@@ -33,8 +33,15 @@ public class GameControler {
     }
 
     private void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
+        Position buffered = pacman.getBufferedDirection();
+        if (buffered != null) {
+            Position potentialNextPos = pacman.getPosition().plus(buffered);
+            if (!isBlocked(potentialNextPos, walls)) {
+                pacman.setDirection(buffered);
+                pacman.setBufferedDirection(null); // limpa depois de aplicar
+            }
+        }
         Position nextPos = pacman.getNextPosition();
-
         if (!isBlocked(nextPos, walls)) {
             pacman.setPosition(nextPos);
         } else {
@@ -67,11 +74,7 @@ public class GameControler {
         else if (key.getKeyType() == KeyType.ArrowRight) newDirection = pacman.moveRight().minus(pacman.getPosition());
 
         if (newDirection != null) {
-            Position potentialNextPos = pacman.getPosition().plus(newDirection);
-
-            if (!isWall(potentialNextPos, walls)) {
-                pacman.setDirection(newDirection);
-            }
+            pacman.setBufferedDirection(newDirection);
         }
     }
 
