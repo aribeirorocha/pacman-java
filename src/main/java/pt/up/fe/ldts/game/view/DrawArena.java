@@ -121,7 +121,7 @@ public class DrawArena {
         int restartX = (width - restart.length()) / 2;
         int restartY = height / 2 + 2;
 
-        graphics.setForegroundColor("#FFFF00");
+        graphics.setForegroundColor("#FFFFFF");
         // Uso de drawString
         drawString(graphics, restartX, restartY, restart);
     }
