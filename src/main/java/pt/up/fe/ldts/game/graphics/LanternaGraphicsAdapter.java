@@ -20,7 +20,7 @@ public class LanternaGraphicsAdapter implements GraphicInterface {
         try {
             tg.setForegroundColor(TextColor.Factory.fromString(color));
         } catch (IllegalArgumentException e) {
-            //Caso a string não seja válida. Por segurança
+
             tg.setForegroundColor(TextColor.ANSI.WHITE);
         }
     }
