@@ -1,9 +1,10 @@
-package pt.up.fe.ldts.game.controler;
+package pt.up.fe.ldts.game.Unit_Tests.controler;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pt.up.fe.ldts.game.controler.GameControler;
 import pt.up.fe.ldts.game.model.Arena;
 import pt.up.fe.ldts.game.model.Position;
 import pt.up.fe.ldts.game.model.element.Ghost;

@@ -15,7 +15,7 @@ public class Application {
     public static void main(String[] args) throws IOException, InterruptedException {
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory()
                 .setInitialTerminalSize(new TerminalSize(80, 30));
-        Screen screen = terminalFactory.screateScreen();
+        Screen screen = terminalFactory.createScreen();
         screen.startScreen();
         screen.setCursorPosition(null);
         LanternaGraphicsAdapter graphics = new LanternaGraphicsAdapter(screen);
