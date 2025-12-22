@@ -61,17 +61,26 @@ public class Arena {
     }
 
     public void update() {
-        new GameControler().moveElements(this);//Para os níveis
-        spawnPowerPellet(); //gerar os poderes no mapa
+        // mover elementos (pacman, ghosts, etc.)
+        new GameControler().moveElements(this);
+        for (Ghost g : ghosts) {
+            if (pacman.getPosition().equals(g.getPosition())) {
+                setGameOver(true);
+                return; // para testes
+            }
+        }
+        // gerar power pellets
+        spawnPowerPellet();
         Iterator<PowerPellet> it = powerPellets.iterator();
         while (it.hasNext()) {
             PowerPellet pellet = it.next();
             if (pacman.getPosition().equals(pellet.getPosition())) {
-                pacman.activatePower(); // poder ativo
+                pacman.activatePower();
                 it.remove();
             }
         }
     }
+
 
 
 

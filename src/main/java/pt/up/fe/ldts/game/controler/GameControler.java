@@ -21,7 +21,6 @@ public class GameControler {
 
     public void moveElements(Arena arena) {
         if (arena.isGameOver() || arena.isGameWon()) return;
-
         movePacmanContinuously(arena.getPacman(), arena.getWalls());
         moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman());
 

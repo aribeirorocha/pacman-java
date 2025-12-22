@@ -1,6 +1,8 @@
-package pt.up.fe.ldts.game.view;
+package pt.up.fe.ldts.game.Unit_Tests.view;
 
 import org.junit.jupiter.api.Test;
+import pt.up.fe.ldts.game.view.DrawArena;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RestartTextTest {

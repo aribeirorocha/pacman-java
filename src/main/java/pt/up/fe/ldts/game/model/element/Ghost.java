@@ -74,6 +74,9 @@ public class Ghost extends Element {
     public void setSpeed(int speed) {
         this.speed = Math.max(1, speed);
     }
+    public void setSpeedForTest(int speed) {
+        this.speed = speed;
+    } //para os testes
 
 
 

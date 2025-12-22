@@ -1,9 +1,11 @@
-package pt.up.fe.ldts.game.model;
+package pt.up.fe.ldts.game.Unit_Tests.model;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pt.up.fe.ldts.game.model.PointManager;
+import pt.up.fe.ldts.game.model.Position;
 import pt.up.fe.ldts.game.model.element.Pacman;
 import pt.up.fe.ldts.game.model.element.Point;
 
