@@ -56,14 +56,7 @@ public class Ghost extends Element {
         return new Position(getPosition().getX() + delta.getX(), getPosition().getY() + delta.getY());
     }
 
-    @Override
-    public void draw(GraphicInterface graphics) {
-        // Usa a cor específica deste fantasma
-        graphics.setForegroundColor(color);
 
-        // Símbolo do Fantasma
-        graphics.putChar(getPosition().getX(), getPosition().getY(), "⌽");
-    }
     public String getColor() {
         return color;
     }

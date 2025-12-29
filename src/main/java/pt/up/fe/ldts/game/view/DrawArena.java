@@ -36,24 +36,38 @@ public class DrawArena {
 
     // --- Métodos Públicos ---
 
-    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman, int totalPoints, boolean gameOver, boolean gameWon, int width, int height, GraphicInterface graphics, List<PowerPellet> powerPellets) throws InterruptedException {
+    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman,
+                     int totalPoints, boolean gameOver, boolean gameWon, int width, int height,
+                     GraphicInterface graphics, List<PowerPellet> powerPellets) throws InterruptedException {
         try {
             graphics.clear();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         if (!gameOver && !gameWon) {
-            for (Point point : points){ point.draw(graphics);
-                graphics.setForegroundColor("#FFFFFF");}
-            for (Wall wall : walls) {wall.draw(graphics);
-                graphics.setForegroundColor("#0000FF");}
-            for (Ghost ghost : ghosts) {ghost.draw(graphics);
-                graphics.setForegroundColor(ghost.getColor());}
+
+            graphics.setForegroundColor("#0000FF");
+            for (Wall wall : walls) graphics.putChar(wall.getPosition().getX(), wall.getPosition().getY(), "█");
+
+
+            graphics.setForegroundColor("#FFFFFF");
+            for (Point point : points) graphics.putChar(point.getPosition().getX(), point.getPosition().getY(), ".");
+
+
+            for (Ghost ghost : ghosts) {
+                graphics.setForegroundColor(ghost.getColor());
+                graphics.putChar(ghost.getPosition().getX(), ghost.getPosition().getY(), "⌽");
+            }
+            graphics.setForegroundColor("#FFD700"); // Cor dourada
             for (PowerPellet pellet : powerPellets) {
-                graphics.setForegroundColor("#FFD700");
-                graphics.putChar(pellet.getPosition().getX(), pellet.getPosition().getY(), "O");}
+                graphics.putChar(pellet.getPosition().getX(), pellet.getPosition().getY(), "O");
+            }
+
+
             graphics.setForegroundColor("#FFFF33");
-            pacman.draw(graphics);
+            graphics.putChar(pacman.getPosition().getX(), pacman.getPosition().getY(), "C");
+
             drawHUD(points, totalPoints, graphics, pacman);
         }
 
@@ -75,7 +89,7 @@ public class DrawArena {
         return "Press R to restart or ESC to quit";
     }
 
-    // --- Métodos Privados de Desenho ---
+
 
     private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics, Pacman pacman) throws InterruptedException {
         String hudText = getHUDText(points, totalPoints);
