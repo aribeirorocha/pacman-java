@@ -51,12 +51,7 @@ public class Pacman extends Element {
         this.score += value;
     }
 
-    @Override
-    public void draw(GraphicInterface graphics) throws InterruptedException {
-        graphics.setForegroundColor("#FFFF33"); // Amarelo Pacman
-        graphics.enableBold();
-        graphics.putChar(position.getX(), position.getY(), "C");
-    }
+
     public boolean isImmune() {
         return immune && System.currentTimeMillis() < immuneUntil; //Ainda está sob efeito dos poderes
     }

@@ -6,8 +6,7 @@ import pt.up.fe.ldts.game.model.CreateArena;
 public class Level1Builder implements LevelBuilder {
     @Override
     public void createArena(Arena arena) {
-        // Layout normal
         new CreateArena().createArena(arena.getWalls(), arena.getGhosts(), arena.getPacman(),
-                arena.getWidth(), arena.getHeight(), arena.getLevel());
+                arena.getWidth(), arena.getHeight(), 1);
     }
 }
