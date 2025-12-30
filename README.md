@@ -1,6 +1,29 @@
 # LDTS_T11_G06 - **PACMAN**
-## Game Description
+### Game Description
 Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que percorre um labirinto comendo pontos e evitando os fantasmas. O objetivo é limpar o mapa sem ser apanhado pelos fantasmas. Este projeto foi desenvolvido por André Rocha (up202407636@up.pt), Catarina Mendes (up202406155@up.pt) e Rodrigo Monteiro (up202005454@up.pt) para LDTS 2025/2026.
+
+## **Game Demonstration:**
+
+<p align="center" justify="center">
+  <img src="Docs/IMG/Menus/Menu inicial.png"/>
+</p>
+<p align="center">
+  <b><i>Fig 1.Main Menu </i></b>
+</p>
+
+<p align="center" justify="center">
+  <img src="Docs/IMG/Menus/Instruções.png"/>
+</p>
+<p align="center">
+  <b><i>Fig 2.Intructions </i></b>
+</p>
+
+<p align="center" justify="center">
+  <img src="Docs/IMG/Menus/Menu níveis.png"/>
+</p>
+<p align="center">
+  <b><i>Fig 2.Levels Menu </i></b>
+</p>
 
 ### Implemented Features
 - **Movimento do Personagem:** O utilizador controla o personagem em quatro direções (cima, baixo, esquerda, direita). O Pacman mantém-se em movimento contínuo na direção escolhida, parando apenas quando colide com uma parede.
