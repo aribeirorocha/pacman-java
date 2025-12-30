@@ -132,24 +132,24 @@ public class GameControlerTest {
 
     @Test
     void testGhostSpeedLoopAndMovement() {
-        // KILLS MUTANT 129 (Loop Boundaries)
+        // MATA MUTANTE 129 (Loop Boundaries)
 
-        // --- FIX: TYPO FIXED (Ghoststop -> Ghost) ---
-        // Assuming 'Ghost' is the concrete class.
+        // 1. Configurar Fantasma
         Ghost movingGhost = new Ghost(5, 5);
-        movingGhost.setDirection(new Position(0, 1)); // Current Direction: Down
+        movingGhost.setDirection(new Position(0, 1)); // Direção atual: Baixo
 
-        // Walls surrounding everything except Right
+        // 2. Paredes cercando exceto Direita
         List<Wall> walls = Arrays.asList(
-                new Wall(5, 6), // Block Front (Down)
-                new Wall(5, 4), // Block Back (Up - Opposite)
-                new Wall(4, 5)  // Block Left
+                new Wall(5, 6), // Bloqueia Frente (Baixo)
+                new Wall(5, 4), // Bloqueia Trás (Cima - Oposto)
+                new Wall(4, 5)  // Bloqueia Esquerda
         );
-        // Only (6, 5) -> Right is free
+        // Só sobra (6, 5) -> Direita
 
-        controller.moveGhosts(Collections.singletonList(movingGhost), walls, pacman);
+        // --- CORREÇÃO AQUI: Adicionar 'arena' como 4º argumento ---
+        controller.moveGhosts(Collections.singletonList(movingGhost), walls, pacman, arena);
 
-        // Assert the ghost moved to the only open spot
+        // 3. Verificações
         assertEquals(new Position(6, 5), movingGhost.getPosition());
         assertEquals(new Position(1, 0), movingGhost.getDirection());
     }

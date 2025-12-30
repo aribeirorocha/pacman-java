@@ -14,6 +14,7 @@ import java.util.Random;
 public class GameControler {
 
     private long lastSpawnTime = System.currentTimeMillis();
+    private static final long SPAWN_INTERVAL = 10000;
     private boolean isOpposite(Position dir1, Position dir2) {
         if (dir1 == null || dir2 == null) return false;
         return dir1.getX() == -dir2.getX() && dir1.getY() == -dir2.getY();
@@ -22,12 +23,28 @@ public class GameControler {
     public void moveElements(Arena arena) {
         if (arena.isGameOver() || arena.isGameWon()) return;
 
+        // 1. Mover Pacman
         movePacmanContinuously(arena.getPacman(), arena.getWalls());
-        moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman());
 
-
-        checkPointCollision(arena.getPacman(), arena.getPoints());
         checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
+        if (arena.isGameOver()) return; // Se morreu, pára tudo.
+
+        moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman(), arena);
+
+        // 3. Verificar Restantes Colisões (apenas por segurança)
+        checkPointCollision(arena.getPacman(), arena.getPoints());
+        checkPowerPelletCollision(arena.getPacman(), arena);
+        checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
+
+        // 4. Lógica de Spawn
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastSpawnTime > SPAWN_INTERVAL) {
+            if (arena.getPowerPellets().isEmpty()) {
+                Position randomPos = arena.getRandomFreePosition();
+                arena.addPowerPellet(new PowerPellet(randomPos.getX(), randomPos.getY()));
+                lastSpawnTime = currentTime;
+            }
+        }
     }
 
     public void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
@@ -115,7 +132,7 @@ public class GameControler {
 
 
 
-    public void moveGhosts(List<Ghost> ghosts, List<Wall> walls, Pacman pacman) {
+    public void moveGhosts(List<Ghost> ghosts, List<Wall> walls, Pacman pacman,Arena arena) {
         Random random = new Random();
 
         for (Ghost ghost : ghosts) {
@@ -152,6 +169,15 @@ public class GameControler {
                 if (chosen != null) {
                     ghost.setDirection(chosen);
                     ghost.setPosition(ghost.getNextPosition(chosen));
+                }
+                if (ghost.getPosition().equals(pacman.getPosition())) {
+                    if (pacman.isImmune()) {
+                        ghost.setPosition(arena.getGhostCagePosition());
+                    } else {
+                        arena.setGameOver(true);
+                    }
+                    // Se colidiu, não vale a pena continuar a mover neste frame
+                    break;
                 }
             }
         }
