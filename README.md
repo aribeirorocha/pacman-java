@@ -36,7 +36,7 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 *Controller:* Processa as entradas do utilizador e atualiza o Model (**GameControler**). Gere a lógica de colisões e movimento.
 
--**Consequences:**
+- **Consequences:**
 
 - Aderência ao Single Responsibility Principle (SRP).
 
@@ -51,7 +51,7 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 - **Implementation:** Definiu-se uma interface **State** com métodos para desenhar e processar input. Classes concretas como **MainMenuState**, **GameState**, **InstructionsState** e **LevelSelectState** implementam comportamentos específicos. A classe **Application** e **Game** delegam o comportamento para o estado atual.
 
--**Consequences:**
+- **Consequences:**
 
 - Eliminação de condicionais complexas na classe principal.
 
