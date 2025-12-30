@@ -111,6 +111,14 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 - *Desacoplamento:* O código do jogo não depende diretamente da implementação do Lanterna.
 
+- **UML diagram:**
+  <p align="center" justify="center">
+  <img src="Docs/UML/Adapter.jpeg"/>
+</p>
+<p align="center">
+  <b><i>Fig 2. Adapter UML</i></b>
+</p>
+
 ### **5. Game Loop**
 - **Problem in Context:** Um jogo precisa de atualizar a lógica e renderizar a imagem a uma taxa constante. Fazer isto sem controlo de tempo resultaria num jogo que corre a velocidades diferentes dependendo da potência do computador, prejudicando a jogabilidade.
 
