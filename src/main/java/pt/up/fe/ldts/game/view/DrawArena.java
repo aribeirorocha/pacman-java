@@ -94,7 +94,7 @@ public class DrawArena {
     }
 
     private void drawGameWin(int width, int height, int score, GraphicInterface graphics) throws InterruptedException{
-        graphics.setForegroundColor("#00FF00");
+        graphics.setForegroundColor("#FFFFFF");
         graphics.enableBold();
         String msg = "YOU WIN! Score: " + score;
         drawString(graphics, (width - msg.length()) / 2, height / 2, msg);
