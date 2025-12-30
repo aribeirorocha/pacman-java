@@ -67,6 +67,14 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 - Transições de estado explícitas e controladas.
 
+- **UML diagram:**
+  <p align="center" justify="center">
+  <img src="Docs/UML/State_Pattern.jpeg"/>
+</p>
+<p align="center">
+  <b><i>Fig 2. State Pattern UML</i></b>
+</p>
+
 ### **3. Factory Method & Builder Pattern (Level Generation)**
 - **Problem in Context:** O jogo requer múltiplos níveis com layouts diferentes e configurações de inimigos variadas. Construir cada nível manualmente dentro da classe Arena violaria o SRP e criaria uma classe rígida e difícil de manter.
 
