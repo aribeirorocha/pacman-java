@@ -90,6 +90,14 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 - Permite variações complexas (ex: Nível 2 tem fantasmas com velocidade duplicada) de forma encapsulada.
 
+- **UML diagram:**
+  <p align="center" justify="center">
+  <img src="Docs/UML/Factory Method & Builder Pattern (Level Generation).jpeg"/>
+</p>
+<p align="center">
+  <b><i>Fig 3. Factory Method & Builder Pattern (Level Generation) UML</i></b>
+</p>
+
 ### **4. Adapter Pattern**
 - **Problem in Context:** O jogo utiliza a biblioteca Lanterna para a interface gráfica. Depender diretamente das classes concretas do Lanterna (como TextGraphics) em todo o código tornaria impossível testar a lógica de desenho sem abrir uma janela de terminal real, além de acoplar o jogo a uma biblioteca externa específica.
 
