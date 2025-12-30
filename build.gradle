@@ -1,33 +1,38 @@
 plugins {
     id 'java'
     id 'application'
+    id 'info.solidsoft.pitest' version '1.15.0'
 
 }
 
-application {
-    mainClass.set('pt.up.fe.ldts.game.Application')
-}
-
-group = 'com.pacman'
+group = 'pt.up.fe.ldts.game'
 version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
+application {
+    mainClass.set('pt.up.fe.ldts.game.Application')
+}
+
 dependencies {
-
-
     implementation 'com.googlecode.lanterna:lanterna:3.1.1'
 
+    // Testes
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-
-
-
+    // Mockito para nota máxima em Arquitetura e Testes
     testImplementation 'org.mockito:mockito-core:5.12.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 test {
@@ -35,8 +40,13 @@ test {
 }
 
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+pitest {
+    junit5PluginVersion = '1.2.1'
+    targetClasses = ['pt.up.fe.ldts.game.*']
+    targetTests = ['pt.up.fe.ldts.game.*']
+    excludedClasses = ['pt.up.fe.ldts.game.Application']
+    outputFormats = ['HTML']
+    timestampedReports = false
+
+    exportLineCoverage = false
 }

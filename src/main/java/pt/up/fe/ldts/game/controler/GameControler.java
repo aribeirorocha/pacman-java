@@ -21,20 +21,19 @@ public class GameControler {
 
     public void moveElements(Arena arena) {
         if (arena.isGameOver() || arena.isGameWon()) return;
+
         movePacmanContinuously(arena.getPacman(), arena.getWalls());
         checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
         if (arena.isGameOver()) return;
 
         moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman(),arena);
 
+
         checkPointCollision(arena.getPacman(), arena.getPoints());
-        spawnPowerPellet(arena);
-        checkPowerPelletCollision(arena.getPacman(), arena);
         checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
-        arena.publicCheckGameStatus();
     }
 
-    private void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
+    public void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
         Position buffered = pacman.getBufferedDirection();
         if (buffered != null) {
             Position potentialNextPos = pacman.getPosition().plus(buffered);
@@ -97,7 +96,7 @@ public class GameControler {
         for (PowerPellet pellet : new ArrayList<>(arena.getPowerPellets())) {
             if (pacman.getPosition().equals(pellet.getPosition())) {
                 pacman.setImmune(5000); // 5s de poder
-                arena.removePowerPellet(pellet);
+
                 break;
             }
         }
@@ -117,13 +116,7 @@ public class GameControler {
         }
     }
 
-    private void spawnPowerPellet(Arena arena) {
-        if (System.currentTimeMillis() - lastSpawnTime > 10000) { // poder aparece a cada 10s
-            Position pos = arena.getRandomFreePosition();
-            arena.addPowerPellet(new PowerPellet(pos.getX(), pos.getY()));
-            lastSpawnTime = System.currentTimeMillis();
-        }
-    }
+
 
     public void moveGhosts(List<Ghost> ghosts, List<Wall> walls, Pacman pacman,Arena arena) {
         Random random = new Random();

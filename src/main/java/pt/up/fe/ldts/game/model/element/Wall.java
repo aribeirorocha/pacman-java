@@ -8,16 +8,11 @@ public class Wall extends Element {
         super(x, y);
     }
 
-    // Se usar a estrutura com classe Element:
-    // public Wall(Position position) { super(position); }
 
     @Override
     public void draw(GraphicInterface graphics) {
-        // Cor: Azul Clássico do Labirinto Pac-Man
-        graphics.setForegroundColor("#0000FF");
 
-        // Caractere: Bloco Sólido (█) para robustez máxima
-        // Se o seu terminal não suportar este caractere, mude para "#"
+        graphics.setForegroundColor("#0000FF");
         graphics.putChar(getPosition().getX(), getPosition().getY(), "█");
     }
 }

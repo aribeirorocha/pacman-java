@@ -9,15 +9,15 @@ public class Ghost extends Element {
     private final String color;
     private Position direction;
     private final Random random;
-    private int speed = 1; //para a velocidade
+    private int speed = 1;
 
-    // ⭐️ CONSTRUTOR DE 2 ARGUMENTOS (CORRIGIDO PARA COMPATIBILIDADE) ⭐️
-    // Chama o construtor de 3 argumentos, usando uma cor padrão (ex: Vermelho)
+
+
     public Ghost(int x, int y) {
-        this(x, y, "#FF0000"); // Atribui a cor vermelha padrão
+        this(x, y, "#FF0000");
     }
 
-    // CONSTRUTOR DE 3 ARGUMENTOS (usado no CreateArena)
+
     public Ghost(int x, int y, String color) {
         super(x, y);
         this.color = color;
@@ -32,7 +32,7 @@ public class Ghost extends Element {
                 new Position(-1, 0), // Esquerda
                 new Position(1, 0)   // Direita
         };
-        // Escolhe uma direção inicial aleatória
+
         return initialMoves[random.nextInt(initialMoves.length)];
     }
 
@@ -56,14 +56,7 @@ public class Ghost extends Element {
         return new Position(getPosition().getX() + delta.getX(), getPosition().getY() + delta.getY());
     }
 
-    @Override
-    public void draw(GraphicInterface graphics) {
-        // Usa a cor específica deste fantasma
-        graphics.setForegroundColor(color);
 
-        // Símbolo do Fantasma
-        graphics.putChar(getPosition().getX(), getPosition().getY(), "⌽");
-    }
     public String getColor() {
         return color;
     }

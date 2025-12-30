@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CreateArena {
 
-    // LISTA DE CORES CLÁSSICAS DOS FANTASMAS (Centralizado)
     private static final List<String> GHOST_COLORS = Arrays.asList(
             "#FF0000", // 0: Blinky (Vermelho)
             "#FF69B4", // 1: Pinky (Rosa)
@@ -106,19 +105,12 @@ public class CreateArena {
                 }
             }
         }
-        // ⭐️ 2. SEGUNDA PASSAGEM: ADICIONA OS FANTASMAS EM FALTA ⭐️
-
-        // Determinamos a posição central e a linha da gaiola (onde o 'G' foi encontrado)
-        // Linha da gaiola é fixa no layout (y=11)
         int cageY = 11;
-        // Posição X do primeiro fantasma 'G' como âncora
         int anchorX = (ghosts.size() > 0) ? ghosts.get(0).getPosition().getX() : width / 2;
 
-        // Adiciona os restantes fantasmas (se houver menos de 4)
         while (ghosts.size() < 4 && ghostIndex < GHOST_COLORS.size()) {
             int xPos;
 
-            // Atribui posições adjacentes ao primeiro 'G' (anchorX)
             switch (ghosts.size()) {
                 case 1: xPos = anchorX - 1; break; // Pinky (Posição 2)
                 case 2: xPos = anchorX + 1; break; // Inky (Posição 3)
@@ -126,7 +118,6 @@ public class CreateArena {
                 default: continue; // Deve sair
             }
 
-            // Atribui a cor sequencial (o ghostIndex já foi incrementado após o 'G')
             String color = GHOST_COLORS.get(ghostIndex);
             ghosts.add(new Ghost(xPos, cageY, color));
             ghostIndex++;

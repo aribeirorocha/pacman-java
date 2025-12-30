@@ -18,6 +18,5 @@ public abstract class Element {
         this.position = position;
     }
 
-    // Método abstrato - cada elemento desenha-se de forma diferente
-    public abstract void draw(GraphicInterface graphics) throws InterruptedException;
+
 }
