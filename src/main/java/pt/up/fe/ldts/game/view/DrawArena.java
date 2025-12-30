@@ -1,5 +1,6 @@
 package pt.up.fe.ldts.game.view;
 
+import pt.up.fe.ldts.game.model.Arena;
 import pt.up.fe.ldts.game.model.element.*;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
 
@@ -9,171 +10,107 @@ import java.util.Random;
 
 public class DrawArena {
 
-    // Função auxiliar para desenhar strings, usada em toda a classe
-    private void drawString(GraphicInterface graphics, int x, int y, String text) {
-        for (int i = 0; i < text.length(); i++) {
-            graphics.putChar(x + i, y, String.valueOf(text.charAt(i)));
-        }
-    }
-
-    // Função para desenhar confetes (mantida para a tela de vitória)
-    private void drawConfetti(int width, int height, GraphicInterface graphics) {
-        Random rand = new Random();
-        String[] confettiChars = {"*", "+", "o", ".", "#", "@"};
-        String[] confettiColors = {"#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"};
-        int numConfetti = (width * height) / 20;
-
-        for (int i = 0; i < numConfetti; i++) {
-            int x = rand.nextInt(width);
-            int y = rand.nextInt(height);
-            String charToDraw = confettiChars[rand.nextInt(confettiChars.length)];
-            String color = confettiColors[rand.nextInt(confettiColors.length)];
-
-            graphics.setForegroundColor(color);
-            graphics.putChar(x, y, charToDraw);
-        }
-    }
-
-    // --- Métodos Públicos ---
-
-    public void draw(List<Point> points, List<Wall> walls, List<Ghost> ghosts, Pacman pacman,
-                     int totalPoints, boolean gameOver, boolean gameWon, int width, int height,
-                     GraphicInterface graphics, List<PowerPellet> powerPellets) throws InterruptedException {
+    public void draw(Arena arena, GraphicInterface graphics) throws InterruptedException {
         try {
             graphics.clear();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        if (!gameOver && !gameWon) {
-
+        if (!arena.isGameOver() && !arena.isGameWon()) {
+            // 1. Desenhar Paredes (Azul)
             graphics.setForegroundColor("#0000FF");
-            for (Wall wall : walls) graphics.putChar(wall.getPosition().getX(), wall.getPosition().getY(), "█");
-
-
-            graphics.setForegroundColor("#FFFFFF");
-            for (Point point : points) graphics.putChar(point.getPosition().getX(), point.getPosition().getY(), ".");
-
-
-            for (Ghost ghost : ghosts) {
-                graphics.setForegroundColor(ghost.getColor());
-                graphics.putChar(ghost.getPosition().getX(), ghost.getPosition().getY(), "⌽");
+            for (Wall wall : arena.getWalls()) {
+                graphics.putChar(wall.getPosition().getX(), wall.getPosition().getY(), "#");
             }
-            graphics.setForegroundColor("#FFD700"); // Cor dourada
-            for (PowerPellet pellet : powerPellets) {
+
+            // 2. Desenhar Pontos (Branco)
+            graphics.setForegroundColor("#FFFFFF");
+            for (Point point : arena.getPoints()) {
+                graphics.putChar(point.getPosition().getX(), point.getPosition().getY(), ".");
+            }
+
+            // 3. Desenhar Power Pellets (Dourado)
+            graphics.setForegroundColor("#FFD700");
+            for (PowerPellet pellet : arena.getPowerPellets()) {
                 graphics.putChar(pellet.getPosition().getX(), pellet.getPosition().getY(), "O");
             }
 
+            // 4. Desenhar Fantasmas (Cores dinâmicas)
+            for (Ghost ghost : arena.getGhosts()) {
+                graphics.setForegroundColor(ghost.getColor());
+                graphics.putChar(ghost.getPosition().getX(), ghost.getPosition().getY(), "G");
+            }
 
+            // 5. Desenhar Pacman (Amarelo)
             graphics.setForegroundColor("#FFFF33");
-            graphics.putChar(pacman.getPosition().getX(), pacman.getPosition().getY(), "C");
+            graphics.putChar(arena.getPacman().getPosition().getX(), arena.getPacman().getPosition().getY(), "C");
 
-            drawHUD(points, totalPoints, graphics, pacman);
+            drawHUD(arena, graphics);
+        } else if (arena.isGameOver()) {
+            drawGameOver(arena.getWidth(), arena.getHeight(), arena.getPacman().getScore(), graphics);
+        } else {
+            drawGameWin(arena.getWidth(), arena.getHeight(), arena.getPacman().getScore(), graphics);
         }
 
-        if (gameOver) {
-            drawGameOver(width, height, pacman.getScore(), graphics);
-        }
-        else if (gameWon) {
-            drawGameWin(width, height, pacman.getScore(), graphics);
+        try {
+            graphics.refresh();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public String getHUDText(List<Point> points, int totalPoints) {
-        int pointsCollected = totalPoints - points.size();
-        int percentage = totalPoints > 0 ? (pointsCollected * 100) / totalPoints : 0;
-        return "Points: " + pointsCollected + "/" + totalPoints + " (" + percentage + "%)";
-    }
+    private void drawHUD(Arena arena, GraphicInterface graphics)  throws InterruptedException{
+        int total = arena.getTotalPoints();
+        int collected = total - arena.getPoints().size();
+        int percentage = total > 0 ? (collected * 100) / total : 0;
 
-    public String getRestartText() {
-        return "Press R to restart or ESC to quit";
-    }
+        String hudText = "Points: " + collected + "/" + total + " (" + percentage + "%)";
 
-
-
-    private void drawHUD(List<Point> points, int totalPoints, GraphicInterface graphics, Pacman pacman) throws InterruptedException {
-        String hudText = getHUDText(points, totalPoints);
-        if (pacman.isImmune()) {
-            long immuneLeft = pacman.getImmuneTimeLeft();
-            hudText += " | IMMUNE: " + immuneLeft + "s";
+        if (arena.getPacman().isImmune()) {
+            hudText += " | POWER: " + (arena.getPacman().getImmuneTimeLeft() / 1000) + "s";
         }
+
         graphics.setForegroundColor("#FFFFFF");
         graphics.enableBold();
-
-        // Uso de drawString
         drawString(graphics, 2, 0, hudText);
-
-        // graphics.disableBold();
     }
 
-    private void drawGameOver(int width, int height, int score, GraphicInterface graphics) throws InterruptedException {
-        // 1. Fundo
-        graphics.setForegroundColor("#000000");
-        graphics.fillRectangle(0, 0, width, height, ' ');
+    private void drawString(GraphicInterface graphics, int x, int y, String text) {
+        for (int i = 0; i < text.length(); i++) {
+            graphics.putChar(x + i, y, String.valueOf(text.charAt(i)));
+        }
+    }
 
-        // 2. Título "GAME OVER"
-        String title = "YOU DIED!";
-        int titleX = (width - title.length()) / 2;
-        int titleY = height / 2 - 2;
-
+    private void drawGameOver(int width, int height, int score, GraphicInterface graphics)throws InterruptedException {
         graphics.setForegroundColor("#FF0000");
         graphics.enableBold();
-        // Uso de drawString
-        drawString(graphics, titleX, titleY, title);
-
-        // 3. Pontuação
-        String scoreText = "Score: " + score;
-        int scoreX = (width - scoreText.length()) / 2;
-        int scoreY = height / 2;
+        String msg = "GAME OVER! Score: " + score;
+        drawString(graphics, (width - msg.length()) / 2, height / 2, msg);
 
         graphics.setForegroundColor("#FFFFFF");
-        // Uso de drawString
-        drawString(graphics, scoreX, scoreY, scoreText);
-
-        // 4. Mensagem de Reinício
-        String restart = getRestartText();
-        int restartX = (width - restart.length()) / 2;
-        int restartY = height / 2 + 2;
-
-        graphics.setForegroundColor("#FFFFFF");
-        // Uso de drawString
-        drawString(graphics, restartX, restartY, restart);
+        String restart = "Press R to Restart";
+        drawString(graphics, (width - restart.length()) / 2, height / 2 + 2, restart);
     }
 
-    private void drawGameWin(int width, int height, int score, GraphicInterface graphics) throws InterruptedException {
-        // 1. Fundo
-        graphics.setForegroundColor("#00008B");
-        graphics.fillRectangle(0, 0, width, height, ' ');
-
-        // 2. Confetes
-        drawConfetti(width, height, graphics);
-
-        // 3. Título "YOU WIN!"
-        String title = "YOU WIN!";
-        int titleX = (width - title.length()) / 2;
-        int titleY = height / 2 - 2;
-
+    private void drawGameWin(int width, int height, int score, GraphicInterface graphics) throws InterruptedException{
         graphics.setForegroundColor("#00FF00");
         graphics.enableBold();
-        // Uso de drawString
-        drawString(graphics, titleX, titleY, title);
+        String msg = "YOU WIN! Score: " + score;
+        drawString(graphics, (width - msg.length()) / 2, height / 2, msg);
 
-        // 4. Pontuação
-        String scoreText = "FINAL SCORE: " + score;
-        int scoreX = (width - scoreText.length()) / 2;
-        int scoreY = height / 2;
+        drawConfetti(width, height, graphics);
+    }
 
-        graphics.setForegroundColor("#FFFFFF");
-        // Uso de drawString
-        drawString(graphics, scoreX, scoreY, scoreText);
-
-        // 5. Mensagem de Reinício
-        String restart = getRestartText();
-        int restartX = (width - restart.length()) / 2;
-        int restartY = height / 2 + 2;
-
-        graphics.setForegroundColor("#FFFF00");
-        // Uso de drawString
-        drawString(graphics, restartX, restartY, restart);
+    private void drawConfetti(int width, int height, GraphicInterface graphics) {
+        Random rand = new Random();
+        String[] colors = {"#FF0000", "#00FF00", "#FFFF00", "#00FFFF"};
+        for (int i = 0; i < 20; i++) {
+            graphics.setForegroundColor(colors[rand.nextInt(colors.length)]);
+            graphics.putChar(rand.nextInt(width), rand.nextInt(height), "*");
+        }
+    }
+    public String getRestartText() {
+        return "Press R to Restart";
     }
 }

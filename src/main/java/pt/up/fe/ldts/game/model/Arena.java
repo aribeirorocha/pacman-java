@@ -32,50 +32,88 @@ public class Arena {
     private long lastSpawnTime;
     private final long spawnInterval = 10000;
     private final Random random = new Random();
+    private int score;
 
     public Arena(int width, int height, int level) {
         this.width = width;
         this.height = height;
         this.currentLevel = level;
+        this.walls = new ArrayList<>();
+        this.ghosts = new ArrayList<>();
+        this.points = new ArrayList<>();
+        this.pacman = new Pacman(2, 2);
+        this.gameOver = false;
+        this.gameWon = false;
 
-        // Inicializamos os componentes de lógica e visão apenas uma vez
-        this.controller = new GameControler();
-        this.viewer = new DrawArena();
+        new CreateArena().createArena(walls, ghosts, pacman, width, height, level);
+        new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
-        this.restart(); // Usa o método restart para inicializar o estado do jogo
+        this.totalPoints = points.size(); // Total de pontos
+
+        this.addPowerPellet(new PowerPellet(6, 5));
     }
 
     // A Arena delega o desenho para o Viewer especializado
     public void draw(GraphicInterface graphics) throws InterruptedException {
-        viewer.draw(points, walls, ghosts, pacman, totalPoints, gameOver, gameWon, width, height, graphics, powerPellets);
+        new DrawArena().draw(this, graphics);
     }
 
     // A Arena delega o processamento de teclas para o Controller
     public void processKey(KeyStroke key) {
-        controller.processKey(key, pacman, ghosts, walls, points, this);
+        new GameControler().processKey(key, pacman, ghosts, walls, points, this);
     }
 
-    // O update coordena a lógica sem instanciar novos controllers
+    // --- MAIN UPDATE METHOD ---
     public void update() {
-        if (gameOver || gameWon) return;
+        // 1. Verificar colisão IMEDIATA (crucial para os testes onde setamos posições iguais)
+        verifyCollisions();
+        if (gameOver) return; // Se já perdeu, não vale a pena mover
 
-        controller.moveElements(this);
-        spawnPowerPellet(); // Esta chamada gera os novos poderes
+        // 2. Mover elementos
+        new GameControler().moveElements(this);
 
-        // Lógica para comer o poder
-        powerPellets.removeIf(pellet -> {
+        // 3. Verificar colisão PÓS-MOVIMENTO (crucial para o jogo real)
+        verifyCollisions();
+
+        // 4. Gerir PowerPellets
+        spawnPowerPellet();
+        Iterator<PowerPellet> it = powerPellets.iterator();
+        while (it.hasNext()) {
+            PowerPellet pellet = it.next();
             if (pacman.getPosition().equals(pellet.getPosition())) {
-                pacman.activatePower(); // Ativa a imunidade no Pacman
-                return true;
+                pacman.activatePower();
+                it.remove();
             }
-            return false;
-        });
+        }
+
+        // 5. Verificar Vitória
+        publicCheckGameStatus();
+    }
+
+    // Método auxiliar para evitar código duplicado
+    private void verifyCollisions() {
+        for (Ghost g : ghosts) {
+            if (pacman.getPosition().equals(g.getPosition())) {
+                setGameOver(true);
+            }
+        }
+    }
+
+    private void checkGameStatus() {
+        if (points.isEmpty()) {
+            this.gameWon = true;
+        }
+    }
+
+    public void publicCheckGameStatus() {
+        checkGameStatus();
     }
     public void restart() {
-        this.walls = new ArrayList<>();
-        this.ghosts = new ArrayList<>();
-        this.points = new ArrayList<>();
-        this.powerPellets = new ArrayList<>();
+        walls.clear();
+        ghosts.clear();
+        points.clear();
+        powerPellets.clear();
+
         this.pacman = new Pacman(2, 2);
 
         this.gameOver = false;
@@ -85,22 +123,13 @@ public class Arena {
         new CreateArena().createArena(walls, ghosts, pacman, width, height, currentLevel);
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
-        this.totalPoints = points.size();
-        this.lastSpawnTime = System.currentTimeMillis();
+        totalPoints = points.size();
+        lastSpawnTime = System.currentTimeMillis();
     }
 
-    private void checkGameStatus() {
-        if (points.isEmpty()) this.gameWon = true;
-    }
-
-    private void spawnPowerPellet() {
-        long now = System.currentTimeMillis();
-        if (now - lastSpawnTime >= spawnInterval) {
-            Position pos = getRandomFreePosition();
-            powerPellets.add(new PowerPellet(pos.getX(), pos.getY()));
-            lastSpawnTime = now;
-        }
-    }
+    public List<PowerPellet> getPowerPellets() { return powerPellets; }
+    public void addPowerPellet(PowerPellet pellet) { powerPellets.add(pellet); }
+    public void removePowerPellet(PowerPellet pellet) { powerPellets.remove(pellet); }
 
     public Position getRandomFreePosition() {
         while (true) {
@@ -116,16 +145,42 @@ public class Arena {
         }
     }
 
+    private void spawnPowerPellet() {
+        long now = System.currentTimeMillis();
+        if (now - lastSpawnTime < spawnInterval) return;
+
+        Position pos = getRandomFreePosition();
+        addPowerPellet(new PowerPellet(pos.getX(), pos.getY()));
+        lastSpawnTime = now;
+    }
+
+    public boolean isGameOver() { return gameOver; }
+    public void setGameOver(boolean value) { this.gameOver = value; }
+    public boolean isGameWon() { return gameWon; }
 
     public List<PowerPellet> getPowerPellets() { return powerPellets; }
     public Pacman getPacman() { return pacman; }
     public List<Wall> getWalls() { return walls; }
     public List<Ghost> getGhosts() { return ghosts; }
     public List<Point> getPoints() { return points; }
-    public boolean isGameOver() { return gameOver; }
-    public void setGameOver(boolean value) { this.gameOver = value; }
-    public boolean isGameWon() { return gameWon; }
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
-    public Position getGhostCagePosition() { return new Position(width / 2, height / 2); }
+    public int getTotalPoints() { return totalPoints; }
+
+    public Position getGhostCagePosition() {
+        return new Position(width / 2, height / 2);
+    }
+
+    public int getLevel() {
+        return currentLevel;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public boolean isWall(Position position) {
+        for (Wall wall : walls) {
+            if (wall.getPosition().equals(position)) return true;
+        }
+        return false;
+    }
 }

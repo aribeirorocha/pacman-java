@@ -8,6 +8,8 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
+import java.awt.Font;
 import java.io.IOException;
 
 public class Game {
@@ -16,16 +18,35 @@ public class Game {
     private static final int FRAME_TIME = 150;
     private GameControler gameControler;
 
+    // CONSTRUTOR 1: Usado pelo Main (Cria a janela real)
     public Game() throws IOException {
-        arena = new Arena(60, 20,1);
+        int width = 40;
+        int height = 20;
+        this.arena = new Arena(width, height, 1);
 
-        screen = new DefaultTerminalFactory()
-                .setInitialTerminalSize(new TerminalSize(40, 20))
+        Font font = new Font("Monospaced", Font.PLAIN, 15);
+        AWTTerminalFontConfiguration fontConfig = AWTTerminalFontConfiguration.newInstance(font);
+
+        this.screen = new DefaultTerminalFactory()
+                .setInitialTerminalSize(new TerminalSize(width, height))
+                .setTerminalEmulatorFontConfiguration(fontConfig)
                 .createScreen();
 
-        screen.startScreen();
-        screen.setCursorPosition(null);
+        this.screen.startScreen();
+        this.screen.setCursorPosition(null);
         this.gameControler = new GameControler();
+    }
+
+    // CONSTRUTOR 2: Usado pelos Testes (Recebe Mocks)
+    public Game(Screen screen, GameControler gameControler, Arena arena) {
+        this.screen = screen;
+        this.gameControler = gameControler;
+        this.arena = arena;
+    }
+
+    // Método extraído para permitir testes de tempo (Mata mutantes de Thread.sleep)
+    public void startSleep(long time) throws InterruptedException {
+        Thread.sleep(time);
     }
 
     private void draw() throws IOException, InterruptedException {
@@ -52,9 +73,11 @@ public class Game {
 
                 long elapsedTime = System.currentTimeMillis() - startTime;
                 long sleepTime = FRAME_TIME - elapsedTime;
+
                 if (sleepTime > 0) {
                     try {
-                        Thread.sleep(sleepTime);
+                        // AQUI: Usamos o método startSleep em vez de Thread.sleep direto
+                        startSleep(sleepTime);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -63,7 +86,7 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); // Converte exceção checada para Runtime
         } finally {
             if (screen != null) {
                 try {

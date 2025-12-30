@@ -1,16 +1,16 @@
-package pt.up.fe.ldts.game.Unit_Tests.model;
+package pt.up.fe.ldts.game.Unit_Tests.model.element;
 
 import org.junit.jupiter.api.Test;
+import pt.up.fe.ldts.game.graphics.GraphicInterface;
 import pt.up.fe.ldts.game.model.Arena;
 import pt.up.fe.ldts.game.model.Position;
 import pt.up.fe.ldts.game.model.element.Pacman;
 import pt.up.fe.ldts.game.model.element.Point;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class ArenaPointTest {
+public class PointTest {
 
     @Test
     void testPacmanCollectsPointIncreasesScorel1() {
@@ -18,7 +18,7 @@ public class ArenaPointTest {
         Pacman pacman = arena.getPacman();
 
         arena.getPoints().clear();
-        arena.getPoints().add(new Point(3, 2));
+        arena.getPoints().add(new pt.up.fe.ldts.game.model.element.Point(3, 2));
 
         pacman.setPosition(new Position(2, 2));
 
@@ -38,7 +38,7 @@ public class ArenaPointTest {
         Pacman pacman = arena.getPacman();
 
         arena.getPoints().clear();
-        arena.getPoints().add(new Point(3, 2));
+        arena.getPoints().add(new pt.up.fe.ldts.game.model.element.Point(3, 2));
 
         pacman.setPosition(new Position(2, 2));
 
@@ -58,7 +58,7 @@ public class ArenaPointTest {
         Pacman pacman = arena.getPacman();
 
         arena.getPoints().clear();
-        arena.getPoints().add(new Point(3, 2));
+        arena.getPoints().add(new pt.up.fe.ldts.game.model.element.Point(3, 2));
 
         pacman.setPosition(new Position(2, 2));
 
@@ -70,5 +70,33 @@ public class ArenaPointTest {
 
         assertEquals(initialScore + 10, pacman.getScore());
         assertTrue(arena.getPoints().isEmpty());
+    }
+    @Test
+    void testDrawPoint() {
+
+        GraphicInterface gui = mock(GraphicInterface.class);
+
+
+        Point point = new Point(5, 5);
+
+
+        point.draw(gui);
+
+
+        verify(gui, times(1)).setForegroundColor("#FFFFFF");
+
+        // 5. MATA O MUTANTE da linha 24: Verifica se desenhou o ponto nas coordenadas certas
+        verify(gui, times(1)).putChar(5, 5, ".");
+
+        // Opcional: Verifica se não houve mais interações inesperadas
+        verifyNoMoreInteractions(gui);
+    }
+
+    @Test
+    void testDrawPointWithNullPosition() {
+
+        GraphicInterface gui = mock(GraphicInterface.class);
+        Point point = new Point(0, 0);
+
     }
 }

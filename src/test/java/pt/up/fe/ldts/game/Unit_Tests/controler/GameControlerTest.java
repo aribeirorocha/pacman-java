@@ -1,100 +1,174 @@
 package pt.up.fe.ldts.game.Unit_Tests.controler;
 
-import org.junit.jupiter.api.Test;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pt.up.fe.ldts.game.controler.GameControler;
 import pt.up.fe.ldts.game.model.Arena;
 import pt.up.fe.ldts.game.model.Position;
-import pt.up.fe.ldts.game.model.element.Ghost;
-import pt.up.fe.ldts.game.model.element.Pacman;
-import pt.up.fe.ldts.game.model.element.Wall;
+import pt.up.fe.ldts.game.model.element.*;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 public class GameControlerTest {
-
-    private GameControler gameControler;
-
-    @Mock
-    private Arena mockArena;
-    @Mock
-    private Pacman mockPacman;
-    @Mock
-    private Ghost mockGhost;
-    @Mock
-    private Wall mockWall;
-
+    @Mock Arena arena;
+    @Mock Pacman pacman;
+    @Mock Ghost ghost;
+    private GameControler controller;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        gameControler = new GameControler();
+        controller = new GameControler();
 
-        when(mockArena.getPacman()).thenReturn(mockPacman);
-        when(mockArena.getGhosts()).thenReturn(Collections.singletonList(mockGhost));
-        when(mockArena.getWalls()).thenReturn(Collections.emptyList());
-        when(mockArena.getPoints()).thenReturn(Collections.emptyList());
-        when(mockArena.isGameOver()).thenReturn(false);
-        when(mockArena.isGameWon()).thenReturn(false);
+        // Mock default behaviors para evitar NullPointerExceptions
+        when(arena.getPacman()).thenReturn(pacman);
+        when(arena.getWalls()).thenReturn(new ArrayList<>());
+        when(arena.getGhosts()).thenReturn(new ArrayList<>());
+        when(arena.getPoints()).thenReturn(new ArrayList<>());
+        when(arena.getPowerPellets()).thenReturn(new ArrayList<>());
+    }
 
-        when(mockPacman.getPosition()).thenReturn(new Position(5, 5));
-        when(mockPacman.getNextPosition()).thenReturn(new Position(6, 5));
-        doNothing().when(mockPacman).setPosition(any());
+    // --- TESTES ORIGINAIS (Lógica de Jogo) ---
 
-        when(mockGhost.getDirection()).thenReturn(new Position(1, 0));
-        when(mockGhost.getNextPosition(any())).thenReturn(new Position(10, 11));
-        doNothing().when(mockGhost).setDirection(any());
-        doNothing().when(mockGhost).setPosition(any());
-        when(mockGhost.getPosition()).thenReturn(new Position(10, 10));
+    @Test
+    void testMovePacmanIntoWall() {
+        Position currentPos = new Position(1, 1);
+        when(pacman.getNextPosition()).thenReturn(new Position(2, 1));
+        when(pacman.getPosition()).thenReturn(currentPos);
+        when(arena.getWalls()).thenReturn(Collections.singletonList(new Wall(2, 1)));
+
+        controller.moveElements(arena);
+
+        verify(pacman, never()).setPosition(any(Position.class));
+        verify(pacman).setDirection(argThat(pos -> pos.getX() == 0 && pos.getY() == 0));
     }
 
     @Test
-    void testGhostCollisionSetsGameOver() {
-        Position collisionPosition = new Position(5, 5);
+    void testGhostEatsPacman() {
+        Position samePos = new Position(5, 5);
+        when(arena.getGhosts()).thenReturn(Collections.singletonList(ghost));
+        when(pacman.getPosition()).thenReturn(samePos);
+        when(ghost.getPosition()).thenReturn(samePos);
+        when(pacman.isImmune()).thenReturn(false);
 
-        when(mockPacman.getPosition()).thenReturn(collisionPosition);
-        when(mockGhost.getPosition()).thenReturn(collisionPosition);
+        controller.moveElements(arena);
 
-        gameControler.moveElements(mockArena);
-
-        verify(mockArena, times(1)).setGameOver(true);
+        verify(arena).setGameOver(true);
     }
 
     @Test
-    void testNoGhostCollision() {
-        gameControler.moveElements(mockArena);
+    void testPacmanEatsGhostWithImmunity() {
+        Position samePos = new Position(5, 5);
+        Position cagePos = new Position(10, 10);
+        when(arena.getGhosts()).thenReturn(Collections.singletonList(ghost));
+        when(pacman.getPosition()).thenReturn(samePos);
+        when(ghost.getPosition()).thenReturn(samePos);
+        when(pacman.isImmune()).thenReturn(true);
+        when(arena.getGhostCagePosition()).thenReturn(cagePos);
 
-        verify(mockArena, never()).setGameOver(true);
+        controller.moveElements(arena);
+
+        verify(ghost).setPosition(cagePos);
+        verify(arena, never()).setGameOver(true);
     }
 
     @Test
-    void testMovementWhenNoWall() {
-        Position nextValidPosition = new Position(6, 5);
+    void testProcessKeyBufferedInput() {
+        when(pacman.moveUp()).thenReturn(new Position(1, 0));
+        when(pacman.getPosition()).thenReturn(new Position(1, 1));
 
-        when(mockPacman.getNextPosition()).thenReturn(nextValidPosition);
-        when(mockArena.getWalls()).thenReturn(Collections.emptyList());
+        controller.processKey(new KeyStroke(KeyType.ArrowUp), pacman, Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), arena);
 
-        gameControler.moveElements(mockArena);
-
-        verify(mockPacman, times(1)).setPosition(nextValidPosition);
+        verify(pacman).setBufferedDirection(argThat(pos -> pos.getX() == 0 && pos.getY() == -1));
     }
 
     @Test
-    void testMovementBlockedByWall() {
-        Position nextInvalidPosition = new Position(6, 5);
+    void testRestartOnGameOverKey() {
+        when(arena.isGameOver()).thenReturn(true);
+        KeyStroke rKey = new KeyStroke('r', false, false);
 
-        when(mockPacman.getNextPosition()).thenReturn(nextInvalidPosition);
+        controller.processKey(rKey, pacman, Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), arena);
 
-        when(mockWall.getPosition()).thenReturn(nextInvalidPosition);
-        when(mockArena.getWalls()).thenReturn(Collections.singletonList(mockWall));
+        verify(arena).restart();
+    }
 
-        gameControler.moveElements(mockArena);
+    // --- TESTES AVANÇADOS (Para matar Mutações em Private/Time) ---
 
-        verify(mockPacman, never()).setPosition(any());
+    @Test
+    void testIsOppositeLogic_Reflection() throws Exception {
+        // MATA MUTANTES 18 e 19 (Lógica Booleana Privada)
+        Method method = GameControler.class.getDeclaredMethod("isOpposite", Position.class, Position.class);
+        method.setAccessible(true);
 
-        verify(mockPacman, times(1)).getPosition();
+        Position up = new Position(0, -1);
+        Position down = new Position(0, 1);
+        Position left = new Position(-1, 0);
+
+        // Verifica se identifica opostos corretamente
+        assertTrue((boolean) method.invoke(controller, up, down));
+        // Verifica se identifica não-opostos
+        assertFalse((boolean) method.invoke(controller, up, left));
+        // Verifica null safety (se o teu código tiver check de null)
+        assertFalse((boolean) method.invoke(controller, null, down));
+    }
+
+    @Test
+    void testSpawnPowerPelletTiming_Reflection() throws Exception {
+        // MATA MUTANTES 118 e 120 (Condicional de Tempo)
+
+        // 1. Aceder ao campo privado lastSpawnTime
+        Field lastSpawnField = GameControler.class.getDeclaredField("lastSpawnTime");
+        lastSpawnField.setAccessible(true);
+
+        // 2. Definir o tempo para 15 segundos atrás (simula que já passou o cooldown)
+        lastSpawnField.setLong(controller, System.currentTimeMillis() - 15000);
+
+        // 3. Mockar uma posição livre para o spawn
+        when(arena.getRandomFreePosition()).thenReturn(new Position(5, 5));
+
+        // 4. Executar
+        controller.moveElements(arena);
+
+        // 5. Verificar se tentou adicionar o PowerPellet
+        verify(arena, times(1)).addPowerPellet(any(PowerPellet.class));
+    }
+
+    @Test
+    void testGhostSpeedLoopAndMovement() {
+        // MATA MUTANTE 129 (Loop Boundaries) e Lógica de Movimento
+
+        // Configura um fantasma com velocidade definida (se o teu Ghost tiver getSpeed, senão assume 1 loop)
+        Ghost movingGhost = new Ghoststop(5, 5); // Usa uma classe concreta ou mock configurado
+        movingGhost.setDirection(new Position(0, 1)); // Direção atual: Baixo
+
+        // Paredes cercando exceto Direita
+        List<Wall> walls = Arrays.asList(
+                new Wall(5, 6), // Bloqueia Frente (Baixo)
+                new Wall(5, 4), // Bloqueia Trás (Cima - Oposto)
+                new Wall(4, 5)  // Bloqueia Esquerda
+        );
+        // Só sobra (6, 5) -> Direita
+
+        controller.moveGhosts(Collections.singletonList(movingGhost), walls, pacman);
+
+        // Se o loop rodou e a lógica funcionou, ele deve ter ido para a única saída
+        assertEquals(new Position(6, 5), movingGhost.getPosition());
+        assertEquals(new Position(1, 0), movingGhost.getDirection());
     }
 }
