@@ -1,8 +1,8 @@
 # LDTS_T11_G06 - **PACMAN**
-### Game Description
+## Game Description
 Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que percorre um labirinto comendo pontos e evitando os fantasmas. O objetivo é limpar o mapa sem ser apanhado pelos fantasmas. Este projeto foi desenvolvido por André Rocha (up202407636@up.pt), Catarina Mendes (up202406155@up.pt) e Rodrigo Monteiro (up202005454@up.pt) para LDTS 2025/2026.
 
-## **Game Demonstration:**
+### **Game Demonstration:**
 
 <p align="center" justify="center">
   <img src="Docs/IMG/Menus/Menu inicial.png"/>
@@ -22,7 +22,7 @@ Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que pe
   <img src="Docs/IMG/Menus/Menu níveis.png"/>
 </p>
 <p align="center">
-  <b><i>Fig 2.Levels Menu </i></b>
+  <b><i>Fig 3.Levels Menu </i></b>
 </p>
 
 ### Implemented Features
@@ -70,7 +70,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/MVC.png"/>
 </p>
 <p align="center">
-  <b><i>Fig 1. MVC UML</i></b>
+  <b><i>Fig 4. MVC UML</i></b>
 </p>
 
 ### **2. State Pattern**
@@ -93,7 +93,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/State_Pattern.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 2. State Pattern UML</i></b>
+  <b><i>Fig 5. State Pattern UML</i></b>
 </p>
 
 ### **3. Factory Method & Builder Pattern (Level Generation)**
@@ -116,7 +116,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/Factory Method & Builder Pattern (Level Generation).jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 3. Factory Method & Builder Pattern (Level Generation) UML</i></b>
+  <b><i>Fig 6. Factory Method & Builder Pattern (Level Generation) UML</i></b>
 </p>
 
 ### **4. Adapter Pattern**
@@ -137,7 +137,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/Adapter.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 4. Adapter UML</i></b>
+  <b><i>Fig 7. Adapter UML</i></b>
 </p>
 
 ### **5. Game Loop**
@@ -152,7 +152,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/Game Loop.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 5. Game Loop UML</i></b>
+  <b><i>Fig 8. Game Loop UML</i></b>
 </p>
 
 ## UML Schema
@@ -160,7 +160,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/UMLfinal1.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 6.UML classes diagram</i></b>
+  <b><i>Fig 9.UML classes diagram</i></b>
 </p>
 
 ## Known Code Smells and Refactoring
@@ -184,6 +184,12 @@ Por agora, todas as features planeadas foram implementadas.
 A estratégia de testes focou-se em garantir a **robustez da lógica do jogo** e a **prevenção de regressões**, utilizando testes unitários e testes de mutação.
 
 ### **Screenshots of Coverage Report**
+
+ <p align="center" justify="center">
+  <img src="Docs/IMG/Test Coverage Report/Captura de ecrã 2025-12-30, às 02.39.29.png"/></p>
+<p align="center">
+  <b><i>Fig 10.Test Coverege Report</i></b>
+</p>
 (Nota: O projeto atingiu uma cobertura de mutação de 80% e cobertura de linha de 92%, o que demonstra uma suite de testes extremamente robusta).
 
 ### **Unit Testing & Mocking**
