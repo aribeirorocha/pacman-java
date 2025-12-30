@@ -68,7 +68,7 @@ public class DrawArena {
         String hudText = "Points: " + collected + "/" + total + " (" + percentage + "%)";
 
         if (arena.getPacman().isImmune()) {
-            hudText += " | POWER: " + (arena.getPacman().getImmuneTimeLeft() / 1000) + "s";
+            hudText += " | POWER: " + (arena.getPacman().getImmuneTimeLeft()) + "s";
         }
 
         graphics.setForegroundColor("#FFFFFF");
