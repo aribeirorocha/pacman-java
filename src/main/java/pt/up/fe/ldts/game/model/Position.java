@@ -1,5 +1,7 @@
 package pt.up.fe.ldts.game.model;
 
+import java.util.Objects;
+
 public class Position {
     private final int x;
     private final int y;
@@ -36,6 +38,6 @@ public class Position {
 
     @Override
     public int hashCode() {
-        return 31 * x + y;
+        return Objects.hash(x, y);
     }
 }

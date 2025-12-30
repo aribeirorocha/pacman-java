@@ -31,7 +31,7 @@ public class GameControler {
         arena.publicCheckGameStatus();
     }
 
-    private void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
+    public void movePacmanContinuously(Pacman pacman, List<Wall> walls) {
         Position buffered = pacman.getBufferedDirection();
         if (buffered != null) {
             Position potentialNextPos = pacman.getPosition().plus(buffered);

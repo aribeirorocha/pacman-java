@@ -63,7 +63,7 @@ public class Pacman extends Element {
     public void setImmune(long durationMillis) {
         this.immune = true;
         this.immuneUntil = System.currentTimeMillis() + durationMillis;
-    } //Ativa os poderes
+    }
     public void activatePower() {
         setImmune(5000);
     }
