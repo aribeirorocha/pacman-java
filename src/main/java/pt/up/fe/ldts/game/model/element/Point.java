@@ -14,14 +14,5 @@ public class Point extends Element {
         // public Element(int x, int y) { this.position = new Position(x, y); }
     }
 
-    // 2. Método draw, apenas desenhando um ponto normal
-    @Override
-    public void draw(GraphicInterface graphics) {
-        graphics.setForegroundColor("#FFFFFF"); // Cor branca
 
-        // Verifica se a posição foi inicializada corretamente
-        if (getPosition() != null) {
-            graphics.putChar(getPosition().getX(), getPosition().getY(), ".");
-        }
-    }
 }

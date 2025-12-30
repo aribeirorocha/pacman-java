@@ -11,9 +11,5 @@ public class PowerPellet extends Element {
         return position;
     }
 
-    @Override
-    public void draw(GraphicInterface graphics) {
-        graphics.setForegroundColor("#FFD700");
-        graphics.putChar(getPosition().getX(), getPosition().getY(), "O");
-    }
+
 }
