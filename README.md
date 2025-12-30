@@ -28,7 +28,7 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 - **The Pattern:** Implementou-se o padrão Model-View-Controller (MVC). Este padrão divide as responsabilidades em três camadas distintas.
 
--**Implementation:**
+- **Implementation:**
 
 *Model:* Encapsula o estado do sistema e dados (e.g., **Arena**, **Pacman**, **Ghost**). Não tem conhecimento da interface gráfica.
 
