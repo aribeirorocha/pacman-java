@@ -132,6 +132,14 @@ Por agora, todas as features planeadas foram implementadas.
   <b><i>Fig 5. Game Loop UML</i></b>
 </p>
 
+## UML Schema
+  <p align="center" justify="center">
+  <img src="Docs/UML/UMLfinal1.jpeg"/>
+</p>
+<p align="center">
+  <b><i>Fig 6.UML classes diagram</i></b>
+</p>
+
 ## Known Code Smells and Refactoring
 ### *1. Large Class & Single Responsibility Principle*
 - **Smell:** Inicialmente, a classe Arena era responsável por guardar os elementos, verificar colisões, mover o Pacman e ainda construir o mapa inicial. Isso tornava a classe enorme e difícil de manter.
