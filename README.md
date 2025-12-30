@@ -44,6 +44,14 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 
 - Capacidade de alterar a interface gráfica (**View**) sem partir a lógica do jogo.
 
+- **UML diagram:**
+  <p align="center" justify="center">
+  <img src="Docs/UML/MVC.png"/>
+</p>
+<p align="center">
+  <b><i>Fig 1. MVC UML</i></b>
+</p>
+
 ### **2. State Pattern**
 - **Problem in Context:** O jogo possui comportamentos distintos dependendo do "momento" em que se encontra: Menu Principal, Jogo, Instruções ou Seleção de Níveis. Gerir isto com condicionais complexas (if/else) ou flags booleanas na classe **Game** tornaria o código difícil de escalar e propenso a erros.
 
