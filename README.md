@@ -3,7 +3,7 @@
 Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que percorre um labirinto comendo pontos e evitando os fantasmas. O objetivo é limpar o mapa sem ser apanhado pelos fantasmas. Este projeto foi desenvolvido por André Rocha (up202407636@up.pt), Catarina Mendes (up202406155@up.pt) e Rodrigo Monteiro (up202005454@up.pt) para LDTS 2025/2026.
 
 ### **Game Demonstration:**
-
+- **Menus:**
 <p align="center" justify="center">
   <img src="Docs/IMG/Menus/Menu inicial.png"/>
 </p>
@@ -24,6 +24,36 @@ Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que pe
 <p align="center">
   <b><i>Fig 3.Levels Menu </i></b>
 </p>
+
+- **Levels:**
+
+ <p align="center" justify="center">
+<img src="Docs/IMG/Videos/Level1.gif" width="400"/> 
+ </p> <p align="center">
+   <b><i>Gif 1.Level 1</i></b></p>
+
+ <p align="center" justify="center">
+<img src="Docs/IMG/Videos/level2.gif" width="400"/> 
+ </p> <p align="center">
+   <b><i>Gif 2.Level 2</i></b></p>
+
+ <p align="center" justify="center">
+<img src="Docs/IMG/Videos/Level3-ezgif.com-video-to-gif-converter.gif" width="400"/> 
+ </p> <p align="center">
+   <b><i>Gif 3.Level 3</i></b></p>
+
+-**End Game:**
+
+ <p align="center" justify="center">
+<img src="Docs/IMG/Videos/win.gif" width="400"/> 
+ </p> <p align="center">
+   <b><i>Gif 4.Game Won (Nota: quando se ganha o score é máximo neste caso 365)</i></b></p>
+
+<p align="center" justify="center">
+  <img src="Docs/IMG/Videos/Lose.png"/>
+</p><p align="center">
+  <b><i>Fig 4.Game Over (Nota: O score é dinâmico) </i></b>
+</p  
 
 ### Implemented Features
 - **Movimento do Personagem:** O utilizador controla o personagem em quatro direções (cima, baixo, esquerda, direita). O Pacman mantém-se em movimento contínuo na direção escolhida, parando apenas quando colide com uma parede.
@@ -70,7 +100,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/MVC.png"/>
 </p>
 <p align="center">
-  <b><i>Fig 4. MVC UML</i></b>
+  <b><i>Fig 5. MVC UML</i></b>
 </p>
 
 ### **2. State Pattern**
@@ -93,7 +123,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/State_Pattern.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 5. State Pattern UML</i></b>
+  <b><i>Fig 6. State Pattern UML</i></b>
 </p>
 
 ### **3. Factory Method & Builder Pattern (Level Generation)**
@@ -116,7 +146,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/Factory Method & Builder Pattern (Level Generation).jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 6. Factory Method & Builder Pattern (Level Generation) UML</i></b>
+  <b><i>Fig 7. Factory Method & Builder Pattern (Level Generation) UML</i></b>
 </p>
 
 ### **4. Adapter Pattern**
@@ -137,7 +167,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/Adapter.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 7. Adapter UML</i></b>
+  <b><i>Fig 8. Adapter UML</i></b>
 </p>
 
 ### **5. Game Loop**
@@ -152,7 +182,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/Game Loop.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 8. Game Loop UML</i></b>
+  <b><i>Fig 9. Game Loop UML</i></b>
 </p>
 
 ## UML Schema
@@ -160,7 +190,7 @@ Por agora, todas as features planeadas foram implementadas.
   <img src="Docs/UML/UMLfinal1.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 9.UML classes diagram</i></b>
+  <b><i>Fig 10.UML classes diagram</i></b>
 </p>
 
 ## Known Code Smells and Refactoring
@@ -188,7 +218,7 @@ A estratégia de testes focou-se em garantir a **robustez da lógica do jogo** e
  <p align="center" justify="center">
   <img src="Docs/IMG/Test Coverage Report/Captura de ecrã 2025-12-30, às 02.39.29.png"/></p>
 <p align="center">
-  <b><i>Fig 10.Test Coverege Report</i></b>
+  <b><i>Fig 11.Test Coverege Report</i></b>
 </p>
 (Nota: O projeto atingiu uma cobertura de mutação de 80% e cobertura de linha de 92%, o que demonstra uma suite de testes extremamente robusta).
 
