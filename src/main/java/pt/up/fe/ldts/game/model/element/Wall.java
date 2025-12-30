@@ -9,10 +9,4 @@ public class Wall extends Element {
     }
 
 
-    @Override
-    public void draw(GraphicInterface graphics) {
-
-        graphics.setForegroundColor("#0000FF");
-        graphics.putChar(getPosition().getX(), getPosition().getY(), "█");
-    }
 }

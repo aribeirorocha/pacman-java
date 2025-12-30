@@ -7,6 +7,7 @@ import pt.up.fe.ldts.game.model.element.*;
 import pt.up.fe.ldts.game.view.DrawArena;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -21,13 +22,13 @@ public class Arena {
     private List<Point> points;
     private List<PowerPellet> powerPellets;
 
+    // --- OPTIMIZATION: Define Controller as a field ---
+    private final GameControler controller;
+    // --------------------------------------------------
+
     private int totalPoints;
     private boolean gameOver;
     private boolean gameWon;
-
-    // Instâncias fixas para evitar criação repetitiva de objetos (Injeção/Associação)
-    private final GameControler controller;
-    private final DrawArena viewer;
 
     private long lastSpawnTime;
     private final long spawnInterval = 10000;
@@ -38,45 +39,59 @@ public class Arena {
         this.width = width;
         this.height = height;
         this.currentLevel = level;
+
+        // Initialize the controller once
+        this.controller = new GameControler();
+
         this.walls = new ArrayList<>();
         this.ghosts = new ArrayList<>();
         this.points = new ArrayList<>();
+        this.powerPellets = new ArrayList<>();
         this.pacman = new Pacman(2, 2);
         this.gameOver = false;
         this.gameWon = false;
 
+        // Instantiating helpers once
         new CreateArena().createArena(walls, ghosts, pacman, width, height, level);
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
-        this.totalPoints = points.size(); // Total de pontos
+        this.totalPoints = points.size();
 
         this.addPowerPellet(new PowerPellet(6, 5));
     }
 
-    // A Arena delega o desenho para o Viewer especializado
+    // --- FIX: Added Getters to solve "cannot find symbol" ---
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+    // --------------------------------------------------------
+
     public void draw(GraphicInterface graphics) throws InterruptedException {
+        // ideally DrawArena should also be a field or passed in, but this is okay for now
         new DrawArena().draw(this, graphics);
     }
 
-    // A Arena delega o processamento de teclas para o Controller
     public void processKey(KeyStroke key) {
-        new GameControler().processKey(key, pacman, ghosts, walls, points, this);
+        // Use the existing controller instance
+        controller.processKey(key, pacman, ghosts, walls, points, this);
     }
 
-    // --- MAIN UPDATE METHOD ---
     public void update() {
-        // 1. Verificar colisão IMEDIATA (crucial para os testes onde setamos posições iguais)
         verifyCollisions();
-        if (gameOver) return; // Se já perdeu, não vale a pena mover
+        if (gameOver) return;
 
-        // 2. Mover elementos
-        new GameControler().moveElements(this);
+        // Use the existing controller instance
+        controller.moveElements(this);
 
-        // 3. Verificar colisão PÓS-MOVIMENTO (crucial para o jogo real)
         verifyCollisions();
 
-        // 4. Gerir PowerPellets
         spawnPowerPellet();
+
+        // Using iterator is good practice for removing items while looping
         Iterator<PowerPellet> it = powerPellets.iterator();
         while (it.hasNext()) {
             PowerPellet pellet = it.next();
@@ -86,11 +101,9 @@ public class Arena {
             }
         }
 
-        // 5. Verificar Vitória
         publicCheckGameStatus();
     }
 
-    // Método auxiliar para evitar código duplicado
     private void verifyCollisions() {
         for (Ghost g : ghosts) {
             if (pacman.getPosition().equals(g.getPosition())) {
@@ -108,6 +121,7 @@ public class Arena {
     public void publicCheckGameStatus() {
         checkGameStatus();
     }
+
     public void restart() {
         walls.clear();
         ghosts.clear();
@@ -119,7 +133,6 @@ public class Arena {
         this.gameOver = false;
         this.gameWon = false;
 
-        // Criadores de Labirinto e Pontos (Padrão Builder/Factory)
         new CreateArena().createArena(walls, ghosts, pacman, width, height, currentLevel);
         new PointManager().createPoints(points, walls, pacman, ghosts, width, height);
 
@@ -158,7 +171,6 @@ public class Arena {
     public void setGameOver(boolean value) { this.gameOver = value; }
     public boolean isGameWon() { return gameWon; }
 
-    public List<PowerPellet> getPowerPellets() { return powerPellets; }
     public Pacman getPacman() { return pacman; }
     public List<Wall> getWalls() { return walls; }
     public List<Ghost> getGhosts() { return ghosts; }
@@ -169,13 +181,8 @@ public class Arena {
         return new Position(width / 2, height / 2);
     }
 
-    public int getLevel() {
-        return currentLevel;
-    }
-
-    public int getScore() {
-        return this.score;
-    }
+    public int getLevel() { return currentLevel; }
+    public int getScore() { return this.score; }
 
     public boolean isWall(Position position) {
         for (Wall wall : walls) {

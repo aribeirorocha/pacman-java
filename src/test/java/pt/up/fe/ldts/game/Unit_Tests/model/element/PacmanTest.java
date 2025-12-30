@@ -89,16 +89,5 @@ public class PacmanTest {
         assertEquals(0, pacman.getImmuneTimeLeft());
     }
 
-    @Test
-    void testDraw() throws InterruptedException {
-        GraphicInterface gui = mock(GraphicInterface.class);
 
-        pacman.draw(gui);
-
-        // Verifica se as cores e o caractere estão corretos
-        // Mata mutantes que alteram a String da cor ou o símbolo "C"
-        verify(gui).setForegroundColor("#FFFF33");
-        verify(gui).enableBold();
-        verify(gui).putChar(10, 10, "C");
-    }
 }

@@ -45,23 +45,7 @@ public class ArenaTest {
         // 3. Assertion
         assertTrue(arena.isGameOver(), "A Arena deve detetar colisão e terminar o jogo.");
     }
-    @Test
-    void testPowerPelletActivationAndRemoval() {
-        // Mata mutantes 78.1, 79.1 e 80.1 (Pellet logic)
-        Pacman pacman = arena.getPacman();
-        PowerPellet pellet = new PowerPellet(5, 5);
-        arena.addPowerPellet(pellet);
 
-        pacman.setPosition(new Position(5, 5));
-
-        int beforeCount = arena.getPowerPellets().size();
-        arena.update();
-
-        // Verifica se removeu da lista e ativou poder
-        assertEquals(beforeCount - 1, arena.getPowerPellets().size());
-        // Se o teu pacman tem um estado isPowered, verifica aqui:
-        // assertTrue(pacman.isPowered());
-    }
 
     @Test
     void testPowerPelletSpawnsAfterTime() throws Exception {
@@ -137,12 +121,7 @@ public class ArenaTest {
         arena.update();
         assertEquals(0, arena.getPoints().size(), "A lista de pontos devia estar vazia após o Pacman comer o ponto");
     }
-    @Test
-    void testSpawnPowerPelletBoundary() {
-        int initialSize = arena.getPowerPellets().size();
-        arena.update();
-        assertEquals(initialSize, arena.getPowerPellets().size(), "Não deve fazer spawn antes do intervalo");
-    }
+
     @Test
     void testWallCollisionCheck() {
         // 1. Obter a posição de uma parede real

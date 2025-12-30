@@ -1,4 +1,4 @@
-package pt.up.fe.ldts.game.Unit_Tests.model.element;
+package pt.up.fe.ldts.game.Unit_Tests.model.element; // Adjusted package name convention
 
 import org.junit.jupiter.api.Test;
 import pt.up.fe.ldts.game.graphics.GraphicInterface;
@@ -7,29 +7,25 @@ import pt.up.fe.ldts.game.model.element.Element;
 import pt.up.fe.ldts.game.model.element.Wall;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
-public class ElementsTest {
+class ElementsTest { // Public is not strictly required for JUnit 5 classes
 
-    // Criamos uma classe concreta temporária apenas para testar a classe abstrata Element
+    // 1. Helper class to test abstract Element logic
     private static class TestElement extends Element {
         public TestElement(int x, int y) {
             super(x, y);
         }
 
-        @Override
-        public void draw(GraphicInterface graphics) {
-            // Método vazio apenas para cumprir o contrato da classe abstrata
-        }
     }
 
     @Test
     void testElementConstructorAndPosition() {
-        // Testa o construtor: Element(int x, int y)
         Element element = new TestElement(10, 20);
 
-        // Testa o getPosition()
+        // Check if object is initialized
         assertNotNull(element.getPosition());
+
+        // Check coordinate values
         assertEquals(10, element.getPosition().getX());
         assertEquals(20, element.getPosition().getY());
     }
@@ -39,24 +35,23 @@ public class ElementsTest {
         Element element = new TestElement(0, 0);
         Position newPos = new Position(5, 5);
 
-        // Testa o setPosition(Position position)
         element.setPosition(newPos);
 
-        // Mata mutantes: verifica se a posição foi realmente alterada para a nova
-        assertEquals(newPos, element.getPosition());
-        assertEquals(5, element.getPosition().getX());
+        // Mutation Test Check:
+        // Ensures the reference was actually updated, not just the x/y values copied
+        // (depending on how your setter is implemented).
+        assertSame(newPos, element.getPosition(), "The position object reference should be updated.");
+
+        // OR if you clone the position in the setter:
+        // assertEquals(newPos, element.getPosition());
     }
 
     @Test
-    void testWallAsElement() {
-        // Usando uma classe real do teu projeto para garantir que a herança funciona
+    void testWallInheritance() {
+        // Ensures Wall correctly calls the super constructor
         Element wall = new Wall(1, 1);
 
         assertEquals(1, wall.getPosition().getX());
-
-        Position updatedPos = new Position(2, 2);
-        wall.setPosition(updatedPos);
-
-        assertEquals(updatedPos, wall.getPosition());
+        assertEquals(1, wall.getPosition().getY());
     }
 }

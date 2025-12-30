@@ -71,26 +71,7 @@ public class PointTest {
         assertEquals(initialScore + 10, pacman.getScore());
         assertTrue(arena.getPoints().isEmpty());
     }
-    @Test
-    void testDrawPoint() {
 
-        GraphicInterface gui = mock(GraphicInterface.class);
-
-
-        Point point = new Point(5, 5);
-
-
-        point.draw(gui);
-
-
-        verify(gui, times(1)).setForegroundColor("#FFFFFF");
-
-        // 5. MATA O MUTANTE da linha 24: Verifica se desenhou o ponto nas coordenadas certas
-        verify(gui, times(1)).putChar(5, 5, ".");
-
-        // Opcional: Verifica se não houve mais interações inesperadas
-        verifyNoMoreInteractions(gui);
-    }
 
     @Test
     void testDrawPointWithNullPosition() {

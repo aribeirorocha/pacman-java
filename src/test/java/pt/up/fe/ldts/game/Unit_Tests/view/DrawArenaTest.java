@@ -219,7 +219,7 @@ class DrawArenaTest {
         drawArena.draw(arena, gui);
 
 
-        verify(gui).putChar(1, 1, "#");
+        verify(gui).putChar(1, 1, "█");
         verify(gui).putChar(3, 3, "O");
         verify(gui).setForegroundColor("#FFFF33");
         verify(gui).putChar(10, 10, "C");

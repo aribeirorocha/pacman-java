@@ -21,7 +21,7 @@ public class DrawArena {
             // 1. Desenhar Paredes (Azul)
             graphics.setForegroundColor("#0000FF");
             for (Wall wall : arena.getWalls()) {
-                graphics.putChar(wall.getPosition().getX(), wall.getPosition().getY(), "#");
+                graphics.putChar(wall.getPosition().getX(), wall.getPosition().getY(), "█");
             }
 
             // 2. Desenhar Pontos (Branco)

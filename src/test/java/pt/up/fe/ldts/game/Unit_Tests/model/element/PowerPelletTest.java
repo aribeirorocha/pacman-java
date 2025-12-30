@@ -19,17 +19,5 @@ public class PowerPelletTest {
         assertEquals(15, pos.getY());
     }
 
-    @Test
-    void testDrawPowerPellet() {
 
-        GraphicInterface gui = mock(GraphicInterface.class);
-
-
-        PowerPellet pellet = new PowerPellet(7, 8);
-
-        pellet.draw(gui);
-
-        verify(gui, times(1)).setForegroundColor("#FFD700");
-         verify(gui, times(1)).putChar(7, 8, "O");
-    }
 }

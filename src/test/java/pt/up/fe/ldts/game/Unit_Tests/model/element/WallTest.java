@@ -36,22 +36,5 @@ public class WallTest {
         assertEquals(20, wall.getPosition().getY());
     }
 
-    @Test
-    void testDrawWall() {
-        // 1. Criar o Mock da interface gráfica
-        GraphicInterface gui = mock(GraphicInterface.class);
 
-        // 2. Criar uma parede numa posição específica
-        Wall wall = new Wall(5, 5);
-
-        // 3. Chamar o método draw
-        wall.draw(gui);
-
-        // 4. MATA O MUTANTE da linha 17: Verifica se definiu a cor azul (#0000FF)
-        verify(gui, times(1)).setForegroundColor("#0000FF");
-
-        // 5. MATA O MUTANTE da linha 21: Verifica se desenhou o caractere na posição certa
-        // Nota: Usa exatamente o caractere que está no teu código ("█" ou "#")
-        verify(gui, times(1)).putChar(5, 5, "█");
-    }
 }
