@@ -1,138 +1,148 @@
-LDTS_ - PACMAN
-Game Description
+# LDTS_T11_G06 - **PACMAN**
+## Game Description
 Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que percorre um labirinto comendo pontos e evitando os fantasmas. O objetivo é limpar o mapa sem ser apanhado pelos fantasmas. Este projeto foi desenvolvido por André Rocha (up202407636@up.pt), Catarina Mendes (up202406155@up.pt) e Rodrigo Monteiro (up202005454@up.pt) para LDTS 2025/2026.
 
-Implemented Features
-Movimento do Personagem - O utilizador controla o personagem em quatro direções (cima, baixo, esquerda, direita). O Pacman mantém-se em movimento contínuo na direção escolhida, parando apenas quando colide com uma parede.
+### Implemented Features
+- **Movimento do Personagem:** O utilizador controla o personagem em quatro direções (cima, baixo, esquerda, direita). O Pacman mantém-se em movimento contínuo na direção escolhida, parando apenas quando colide com uma parede.
 
-Labirinto - O mapa é composto por paredes intransponíveis, desenhadas para criar uma navegação estratégica e desafiante para o jogador.
+- **Labirinto:** O mapa é composto por paredes intransponíveis, desenhadas para criar uma navegação estratégica e desafiante para o jogador.
 
-Pontos e Score - A recolha de pontos espalhados pelo mapa aumenta a pontuação do jogador. O nível é concluído quando todos os pontos são consumidos.
+- **Pontos e Score:** A recolha de pontos espalhados pelo mapa aumenta a pontuação do jogador. O nível é concluído quando todos os pontos são consumidos.
 
-Fantasmas - Inimigos percorrem o labirinto de forma contínua. A colisão entre o Pacman e um fantasma resulta no fim do jogo (Game Over), exceto se o Pacman tiver um poder ativo.
+- **Fantasmas:** Inimigos percorrem o labirinto de forma contínua. A colisão entre o Pacman e um fantasma resulta no fim do jogo (Game Over), exceto se o Pacman tiver um poder ativo.
 
-Poderes (Power Pellets) - Implementação de itens especiais que, quando consumidos, conferem imunidade temporária ao Pacman. Durante este período, o Pacman não morre ao colidir com fantasmas, enviando-os de volta à posição inicial.
+- **Poderes (Power Pellets):** Implementação de itens especiais que, quando consumidos, conferem imunidade temporária ao Pacman. Durante este período, o Pacman não morre ao colidir com fantasmas, enviando-os de volta à posição inicial.
 
-Níveis Dinâmicos - O jogo suporta progressão de níveis. Ao completar um mapa, o jogador avança para um novo nível (foram implementados 3 níveis distintos) com layouts diferentes e dificuldade acrescida (aumento da velocidade dos fantasmas).
+- **Níveis Dinâmicos:** O jogo suporta progressão de níveis. Ao completar um mapa, o jogador avança para um novo nível (foram implementados 3 níveis distintos) com layouts diferentes e dificuldade acrescida (aumento da velocidade dos fantasmas).
 
-Menus Interativos - Navegação completa entre Menu Principal, Seleção de Níveis, Instruções e Jogo, permitindo uma experiência de utilizador fluida.
+- **Menus Interativos:** Navegação completa entre Menu Principal, Seleção de Níveis, Instruções e Jogo, permitindo uma experiência de utilizador fluida.
 
-Planned Features
+### Planned Features
 Efeitos Sonoros - Adição de sons para a apanha de moedas e Game Over.
 
 Persistência de Highscores - Guardar a pontuação máxima num ficheiro para que persista entre sessões de jogo.
 
-Design
-1. Architectural Pattern (MVC)
-Problem in Context: Num projeto que envolve sistemas interativos complexos, como um jogo, torna-se imperativo estabelecer uma arquitetura estruturada que promova a modularidade e a Separation of Concerns. A ausência de uma organização clara conduziria a um acoplamento excessivo (Spaghetti Code) entre a lógica do jogo, as interações do utilizador e a representação visual, dificultando testes e manutenção.
+## Design
+### **1. Architectural Pattern (MVC)**
+- **Problem in Context:** Num projeto que envolve sistemas interativos complexos, como um jogo, torna-se imperativo estabelecer uma arquitetura estruturada que promova a modularidade e a Separation of Concerns. A ausência de uma organização clara conduziria a um acoplamento excessivo (Spaghetti Code) entre a lógica do jogo, as interações do utilizador e a representação visual, dificultando testes e manutenção.
 
-The Pattern: Implementou-se o padrão Model-View-Controller (MVC). Este padrão divide as responsabilidades em três camadas distintas.
+- **The Pattern:** Implementou-se o padrão Model-View-Controller (MVC). Este padrão divide as responsabilidades em três camadas distintas.
 
-Implementation:
+- **Implementation:**
 
-Model: Encapsula o estado do sistema e dados (e.g., Arena, Pacman, Ghost). Não tem conhecimento da interface gráfica.
+*Model:* Encapsula o estado do sistema e dados (e.g., **Arena**, **Pacman**, **Ghost**). Não tem conhecimento da interface gráfica.
 
-View: Responsável apenas pela representação visual (DrawArena, LanternaGraphicsAdapter). Recebe dados do Model para desenhar, mas não os altera.
+*View:* Responsável apenas pela representação visual (**DrawArena**, **LanternaGraphicsAdapter**). Recebe dados do Model para desenhar, mas não os altera.
 
-Controller: Processa as entradas do utilizador e atualiza o Model (GameControler). Gere a lógica de colisões e movimento.
+*Controller:* Processa as entradas do utilizador e atualiza o Model (**GameControler**). Gere a lógica de colisões e movimento.
 
-Consequences:
+- **Consequences:**
 
-Aderência ao Single Responsibility Principle (SRP).
+- Aderência ao Single Responsibility Principle (SRP).
 
-Facilidade em testar a lógica do jogo (Model) sem depender da biblioteca gráfica (Lanterna).
+- Facilidade em testar a lógica do jogo (**Model**) sem depender da biblioteca gráfica (Lanterna).
 
-Capacidade de alterar a interface gráfica (View) sem partir a lógica do jogo.
+- Capacidade de alterar a interface gráfica (**View**) sem partir a lógica do jogo.
 
-2. State Pattern
-Problem in Context: O jogo possui comportamentos distintos dependendo do "momento" em que se encontra: Menu Principal, Jogo, Instruções ou Seleção de Níveis. Gerir isto com condicionais complexas (if/else) ou flags booleanas na classe Game tornaria o código difícil de escalar e propenso a erros.
+- **UML diagram:**
+  <p align="center" justify="center">
+  <img src="Docs/UML/MVC.png"/>
+</p>
+<p align="center">
+  <b><i>Fig 1. MVC UML</i></b>
+</p>
 
-The Pattern: Aplicámos o State Pattern para representar os diferentes estados do jogo como objetos.
+### **2. State Pattern**
+- **Problem in Context:** O jogo possui comportamentos distintos dependendo do "momento" em que se encontra: Menu Principal, Jogo, Instruções ou Seleção de Níveis. Gerir isto com condicionais complexas (if/else) ou flags booleanas na classe **Game** tornaria o código difícil de escalar e propenso a erros.
 
-Implementation: Definiu-se uma interface State com métodos para desenhar e processar input. Classes concretas como MainMenuState, GameState, InstructionsState e LevelSelectState implementam comportamentos específicos. A classe Application e Game delegam o comportamento para o estado atual.
+- **The Pattern:** Aplicámos o State Pattern para representar os diferentes estados do jogo como objetos.
 
-Consequences:
+- **Implementation:** Definiu-se uma interface **State** com métodos para desenhar e processar input. Classes concretas como **MainMenuState**, **GameState**, **InstructionsState** e **LevelSelectState** implementam comportamentos específicos. A classe **Application** e **Game** delegam o comportamento para o estado atual.
 
-Eliminação de condicionais complexas na classe principal.
+- **Consequences:**
 
-Facilidade em adicionar novos estados (ex: Menu de Pause) sem alterar o código existente (Open/Closed Principle).
+- Eliminação de condicionais complexas na classe principal.
 
-Transições de estado explícitas e controladas.
+- Facilidade em adicionar novos estados (ex: Menu de Pause) sem alterar o código existente (Open/Closed Principle).
 
-3. Factory Method & Builder Pattern (Level Generation)
-Problem in Context: O jogo requer múltiplos níveis com layouts diferentes e configurações de inimigos variadas. Construir cada nível manualmente dentro da classe Arena violaria o SRP e criaria uma classe rígida e difícil de manter.
+- Transições de estado explícitas e controladas.
 
-The Pattern: Utilizámos uma abordagem baseada em Builder/Factory. Criou-se uma interface LevelBuilder que define como uma arena deve ser populada.
+### **3. Factory Method & Builder Pattern (Level Generation)**
+- **Problem in Context:** O jogo requer múltiplos níveis com layouts diferentes e configurações de inimigos variadas. Construir cada nível manualmente dentro da classe Arena violaria o SRP e criaria uma classe rígida e difícil de manter.
 
-Implementation: Classes específicas (Level1Builder, Level2Builder, Level3Builder) implementam a lógica de construção de cada mapa (paredes, posição inicial dos fantasmas e velocidade). A classe GameState atua como Director, solicitando ao builder apropriado a criação da arena consoante o nível escolhido.
+- **The Pattern:** Utilizámos uma abordagem baseada em Builder/Factory. Criou-se uma interface **LevelBuilder** que define como uma arena deve ser populada.
 
-Consequences:
+- **Implementation:** Classes específicas (Level1Builder, Level2Builder, Level3Builder) implementam a lógica de construção de cada mapa (paredes, posição inicial dos fantasmas e velocidade). A classe **GameState** atua como Director, solicitando ao builder apropriado a criação da arena consoante o nível escolhido.
 
-Separação completa entre a lógica de construção do nível e a sua utilização.
+- **Consequences:**
 
-Facilidade em criar novos níveis apenas adicionando uma nova classe Builder.
+- Separação completa entre a lógica de construção do nível e a sua utilização.
 
-Permite variações complexas (ex: Nível 2 tem fantasmas com velocidade duplicada) de forma encapsulada.
+- Facilidade em criar novos níveis apenas adicionando uma nova classe **Builder**.
 
-4. Adapter Pattern
-Problem in Context: O jogo utiliza a biblioteca Lanterna para a interface gráfica. Depender diretamente das classes concretas do Lanterna (como TextGraphics) em todo o código tornaria impossível testar a lógica de desenho sem abrir uma janela de terminal real, além de acoplar o jogo a uma biblioteca externa específica.
+- Permite variações complexas (ex: Nível 2 tem fantasmas com velocidade duplicada) de forma encapsulada.
 
-The Pattern: Implementou-se o Adapter Pattern através da interface GraphicInterface.
+### **4. Adapter Pattern**
+- **Problem in Context:** O jogo utiliza a biblioteca Lanterna para a interface gráfica. Depender diretamente das classes concretas do Lanterna (como TextGraphics) em todo o código tornaria impossível testar a lógica de desenho sem abrir uma janela de terminal real, além de acoplar o jogo a uma biblioteca externa específica.
 
-Implementation: A interface GraphicInterface define os métodos que o nosso jogo precisa (drawText, putChar, clear). A classe LanternaGraphicsAdapter implementa esta interface e "adapta" as chamadas para a biblioteca Lanterna.
+- **The Pattern:** Implementou-se o Adapter Pattern através da interface **GraphicInterface**.
 
-Consequences:
+- **Implementation:** A interface GraphicInterface define os métodos que o nosso jogo precisa (drawText, putChar, clear). A classe **LanternaGraphicsAdapter** implementa esta interface e "adapta" as chamadas para a biblioteca Lanterna.
 
-Testabilidade: Permite criar Mocks de GraphicInterface para testar as Views unitariamente sem interface gráfica real (como demonstrado em DrawArenaTest e LanternaGraphicsAdapterTest).
+- **Consequences:**
 
-Desacoplamento: O código do jogo não depende diretamente da implementação do Lanterna.
+-*Testabilidade:* Permite criar Mocks de **GraphicInterface** para testar as **Views** unitariamente sem interface gráfica real (como demonstrado em DrawArenaTest e LanternaGraphicsAdapterTest).
 
-5. Game Loop
-Problem in Context: Um jogo precisa de atualizar a lógica e renderizar a imagem a uma taxa constante. Fazer isto sem controlo de tempo resultaria num jogo que corre a velocidades diferentes dependendo da potência do computador, prejudicando a jogabilidade.
+- *Desacoplamento:* O código do jogo não depende diretamente da implementação do Lanterna.
 
-The Pattern: Implementou-se o padrão Game Loop na classe Game.
+### **5. Game Loop**
+- **Problem in Context:** Um jogo precisa de atualizar a lógica e renderizar a imagem a uma taxa constante. Fazer isto sem controlo de tempo resultaria num jogo que corre a velocidades diferentes dependendo da potência do computador, prejudicando a jogabilidade.
 
-Implementation: O método run() gere o ciclo de vida: processar input -> atualizar estado -> desenhar. Utiliza-se controlo de tempo (System.currentTimeMillis()) para garantir que cada frame demora exatamente o tempo definido (FRAME_TIME), mantendo o jogo fluido e consistente.
+- **The Pattern:** Implementou-se o padrão Game Loop na classe **Game**.
 
-Known Code Smells and Refactoring
-1. Large Class & Single Responsibility Principle
-Smell: Inicialmente, a classe Arena era responsável por guardar os elementos, verificar colisões, mover o Pacman e ainda construir o mapa inicial. Isso tornava a classe enorme e difícil de manter. Refactoring:
+- **Implementation:** O método run() gere o ciclo de vida: processar input -> atualizar estado -> desenhar. Utiliza-se controlo de tempo (System.currentTimeMillis()) para garantir que cada frame demora exatamente o tempo definido (FRAME_TIME), mantendo o jogo fluido e consistente.
 
-Extract Class: A lógica de construção do mapa foi extraída para CreateArena e para os LevelBuilders.
+## Known Code Smells and Refactoring
+### *1. Large Class & Single Responsibility Principle*
+- **Smell:** Inicialmente, a classe Arena era responsável por guardar os elementos, verificar colisões, mover o Pacman e ainda construir o mapa inicial. Isso tornava a classe enorme e difícil de manter.
+  
+- **Refactoring:**
 
-Extract Class: A lógica de gestão e colisão de pontos foi movida para PointManager.
+- *Extract Class:* A lógica de construção do mapa foi extraída para **CreateArena** e para os **LevelBuilders**.
 
-Agora, a Arena serve principalmente como contentor de dados (Model), delegando a lógica complexa para classes especializadas.
+- *Extract Class:* A lógica de gestão e colisão de pontos foi movida para **PointManager**.
 
-2. Primitive Obsession
-Smell: O uso de coordenadas soltas (int x, int y) em todos os métodos de desenho e movimento tornava o código propenso a erros (trocar x por y acidentalmente). Refactoring:
+  Agora, a Arena serve principalmente como contentor de dados (**Model**), delegando a lógica complexa para classes especializadas.
 
-Utilização consistente da classe Position para encapsular coordenadas. Isto permite também usar métodos como position.plus() ou position.equals(), tornando o código mais legível e seguro.
+### **2. Primitive Obsession**
+- **Smell:** O uso de coordenadas soltas (int x, int y) em todos os métodos de desenho e movimento tornava o código propenso a erros (trocar x por y acidentalmente).
 
-Testing
-A estratégia de testes focou-se em garantir a robustez da lógica do jogo e a prevenção de regressões, utilizando testes unitários e testes de mutação.
+  - **Refactoring:** Utilização consistente da classe **Position** para encapsular coordenadas. Isto permite também usar métodos como **position.plus()** ou **position.equals()**, tornando o código mais legível e seguro.
 
-Screenshots of Coverage Report
+## Testing
+A estratégia de testes focou-se em garantir a **robustez da lógica do jogo** e a **prevenção de regressões**, utilizando testes unitários e testes de mutação.
+
+### **Screenshots of Coverage Report**
 (Nota: O projeto atingiu uma cobertura de mutação de 80% e cobertura de linha de 92%, o que demonstra uma suite de testes extremamente robusta).
 
-Unit Testing & Mocking
+### **Unit Testing & Mocking**
 Utilizámos JUnit 5 e Mockito extensivamente.
 
-Mocking: O padrão Adapter permitiu-nos "mockar" a GraphicInterface e o Screen. Isto possibilitou testar a classe DrawArena e garantir que os métodos de desenho (drawCharacter, setForegroundColor) são chamados com os parâmetros corretos, sem precisar de abrir uma janela.
+- **Mocking:** O padrão Adapter permitiu-nos "mockar" a **GraphicInterface** e o **Screen**. Isto possibilitou testar a classe **DrawArena** e garantir que os métodos de desenho (drawCharacter, setForegroundColor) são chamados com os parâmetros corretos, sem precisar de abrir uma janela.
 
-Mutation Testing: Utilizámos o Pitest para avaliar a qualidade dos nossos testes. O código foi desenhado para "matar" mutantes, garantindo que verificamos limites de loops, condições lógicas e valores de retorno, como documentado nos comentários dos testes.
+- **Mutation Testing:** Utilizámos o **Pitest** para avaliar a qualidade dos nossos testes. O código foi desenhado para "matar" mutantes, garantindo que verificamos limites de loops, condições lógicas e valores de retorno, como documentado nos comentários dos testes.
 
-Testes Principais:
+### **Testes Principais:**
 
-PacmanTest / GhostTest: Verificam a lógica de movimento, velocidade e atributos dos elementos.
+- **PacmanTest / GhostTest:** Verificam a lógica de movimento, velocidade e atributos dos elementos.
 
-ArenaTest: Garante a integridade do mapa, colisões e regras de vitória/derrota.
+- **ArenaTest:** Garante a integridade do mapa, colisões e regras de vitória/derrota.
 
-DrawArenaTest: Verifica se a View processa corretamente o estado do Model e desenha as cores corretas.
+- **DrawArenaTest:** Verifica se a View processa corretamente o estado do Model e desenha as cores corretas.
 
-GameControlerTest: Testa o fluxo principal, spawns de PowerPellets e resposta a inputs.
+- **GameControlerTest:** Testa o fluxo principal, spawns de PowerPellets e resposta a inputs.
 
-Self-Evaluation
+## Self-Evaluation
 O trabalho foi dividido de forma equitativa. Todos os membros contribuíram para a arquitetura, implementação de features e testes.
 
 André Rocha: 33.3%
