@@ -33,7 +33,7 @@ Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que pe
    <b><i>Gif 1.Level 1</i></b></p>
 
  <p align="center" justify="center">
-<img src="Docs/IMG/Videos/level2.gif" width="400"/> 
+<img src="Docs/IMG/Videos/l2 - Feito com Clipchamp.gif" width="400"/> 
  </p> <p align="center">
    <b><i>Gif 2.Level 2</i></b></p>
 
@@ -53,7 +53,7 @@ Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que pe
   <img src="Docs/IMG/Videos/Lose.png"/>
 </p><p align="center">
   <b><i>Fig 4.Game Over (Nota: O score é dinâmico) </i></b>
-</p  
+</p> 
 
 ### Implemented Features
 - **Movimento do Personagem:** O utilizador controla o personagem em quatro direções (cima, baixo, esquerda, direita). O Pacman mantém-se em movimento contínuo na direção escolhida, parando apenas quando colide com uma parede.
