@@ -18,9 +18,7 @@ Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que pe
 - **Menus Interativos:** Navegação completa entre Menu Principal, Seleção de Níveis, Instruções e Jogo, permitindo uma experiência de utilizador fluida.
 
 ### Planned Features
-Efeitos Sonoros - Adição de sons para a apanha de moedas e Game Over.
-
-Persistência de Highscores - Guardar a pontuação máxima num ficheiro para que persista entre sessões de jogo.
+Por agora, todas as features planeadas foram implementadas.
 
 ## Design
 ### **1. Architectural Pattern (MVC)**
@@ -116,7 +114,7 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
   <img src="Docs/UML/Adapter.jpeg"/>
 </p>
 <p align="center">
-  <b><i>Fig 2. Adapter UML</i></b>
+  <b><i>Fig 4. Adapter UML</i></b>
 </p>
 
 ### **5. Game Loop**
@@ -125,6 +123,14 @@ Persistência de Highscores - Guardar a pontuação máxima num ficheiro para qu
 - **The Pattern:** Implementou-se o padrão Game Loop na classe **Game**.
 
 - **Implementation:** O método run() gere o ciclo de vida: processar input -> atualizar estado -> desenhar. Utiliza-se controlo de tempo (System.currentTimeMillis()) para garantir que cada frame demora exatamente o tempo definido (FRAME_TIME), mantendo o jogo fluido e consistente.
+
+- **UML diagram:**
+  <p align="center" justify="center">
+  <img src="Docs/UML/Game Loop.jpeg"/>
+</p>
+<p align="center">
+  <b><i>Fig 5. Game Loop UML</i></b>
+</p>
 
 ## Known Code Smells and Refactoring
 ### *1. Large Class & Single Responsibility Principle*
