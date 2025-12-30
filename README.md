@@ -42,7 +42,7 @@ Neste jogo clássico chamado PACMAN, o utilizador controla uma personagem que pe
  </p> <p align="center">
    <b><i>Gif 3.Level 3</i></b></p>
 
--**End Game:**
+- **End Game:**
 
  <p align="center" justify="center">
 <img src="Docs/IMG/Videos/win.gif" width="400"/> 
