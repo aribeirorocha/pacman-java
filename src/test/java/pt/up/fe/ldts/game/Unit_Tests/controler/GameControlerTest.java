@@ -60,7 +60,7 @@ public class GameControlerTest {
 
         gameControler.moveElements(mockArena);
 
-        verify(mockArena, times(1)).setGameOver(true);
+        verify(mockArena, atLeastOnce()).setGameOver(true);
     }
 
     @Test
@@ -95,6 +95,6 @@ public class GameControlerTest {
 
         verify(mockPacman, never()).setPosition(any());
 
-        verify(mockPacman, times(1)).getPosition();
+        verify(mockPacman, atLeastOnce()).getPosition();
     }
 }

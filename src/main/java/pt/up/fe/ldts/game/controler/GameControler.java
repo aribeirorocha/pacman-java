@@ -22,7 +22,10 @@ public class GameControler {
     public void moveElements(Arena arena) {
         if (arena.isGameOver() || arena.isGameWon()) return;
         movePacmanContinuously(arena.getPacman(), arena.getWalls());
-        moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman());
+        checkGhostCollision(arena.getPacman(), arena.getGhosts(), arena);
+        if (arena.isGameOver()) return;
+
+        moveGhosts(arena.getGhosts(), arena.getWalls(), arena.getPacman(),arena);
 
         checkPointCollision(arena.getPacman(), arena.getPoints());
         spawnPowerPellet(arena);
@@ -122,7 +125,7 @@ public class GameControler {
         }
     }
 
-    public void moveGhosts(List<Ghost> ghosts, List<Wall> walls, Pacman pacman) {
+    public void moveGhosts(List<Ghost> ghosts, List<Wall> walls, Pacman pacman,Arena arena) {
         Random random = new Random();
 
         for (Ghost ghost : ghosts) {
@@ -159,6 +162,15 @@ public class GameControler {
                 if (chosen != null) {
                     ghost.setDirection(chosen);
                     ghost.setPosition(ghost.getNextPosition(chosen));
+                }
+                if (ghost.getPosition().equals(pacman.getPosition())) {
+
+                    if (pacman.isImmune()) {
+                        ghost.setPosition(arena.getGhostCagePosition());
+                    } else {
+                        arena.setGameOver(true);
+                        return;
+                    }
                 }
             }
         }
